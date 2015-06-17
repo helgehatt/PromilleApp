@@ -6,14 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Helge on 17.06.2015.
- */
-public class TabGraph extends Fragment {
+public class GraphFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_graph, container, false);
 
-        return inflater.inflate(R.layout.tab_graph, container, false);
+        return view;
     }
 }

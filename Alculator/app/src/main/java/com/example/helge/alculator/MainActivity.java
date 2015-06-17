@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mPagerAdapter);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(2);
 
     }
 

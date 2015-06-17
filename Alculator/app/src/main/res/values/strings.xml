@@ -1,18 +1,12 @@
 <resources>
     <string name="app_name">Alculator</string>
 
-    <string name="settings_button">Settings</string>
-    <string name="history_button">History</string>
-    <string name="main_button">Main</string>
-
-    <string name="history_string1">Overall limit:</string>
-    <string name="history_string2">Current limit:</string>
-    <string name="history_string3">Limit in:</string>
-    <string name="history_string4">Content:</string>
-    <string name="history_string5">Units:</string>
-    <string name="history_string6">Calories:</string>
-    <string name="history_info">Info</string>
-    <string name="history_graph">Graph</string>
+    <string name="history_content">Content:</string>
+    <string name="history_drinks">Drinks:</string>
+    <string name="history_calories">Calories:</string>
+    <string name="graph_score_high">High Score:</string>
+    <string name="graph_score_current">Current Score:</string>
+    <string name="graph_score_count">High Score in:</string>
 
     <string name="main_string_add">+</string>
     <string name="main_string_rem">-</string>

@@ -18,7 +18,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -28,8 +28,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return "History";
             case 1:
-                return "Main";
+                return "Graph";
             case 2:
+                return "Main";
+            case 3:
                 return "Settings";
         }
         return null;
@@ -41,8 +43,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new HistoryFragment();
             case 1:
-                return new MainFragment();
+                return new GraphFragment();
             case 2:
+                return new MainFragment();
+            case 3:
                 return new SettingsFragment();
         }
         return null;
