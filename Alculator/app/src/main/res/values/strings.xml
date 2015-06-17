@@ -17,4 +17,13 @@
     <string name="main_string_add">+</string>
     <string name="main_string_rem">-</string>
 
+    <string name="metric">Metric</string>
+    <string name="imperial">Imperial</string>
+    <string name="gender">Gender:</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="weight">Weight:</string>
+    <string name="kg">kg</string>
+    <string name="lbs">lbs</string>
+
 </resources>

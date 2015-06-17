@@ -14,8 +14,6 @@ public class AddDrinkActivity extends Activity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String string = "Hej";
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_add_drink);
