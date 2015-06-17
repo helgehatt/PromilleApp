@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/fragment_main"
+                android:padding="25dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="40dp"
+        android:text="2.03‰"
+        android:id="@+id/textNumber"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="30dp"
+        android:text="Sober in 12 hours"
+        android:id="@+id/textTimer"
+        android:layout_below="@+id/textNumber"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttonLayout"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_string_add"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:layout_marginRight="80dp"
+            android:id="@+id/button_add"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_string_rem"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:id="@+id/button_rem"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:background="#FFF"
+        android:layout_below="@id/textTimer"
+        android:layout_above="@id/buttonLayout">
+
+        <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#000"
+            android:id="@+id/gridView"
+            android:longClickable="true"
+            android:numColumns="2"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

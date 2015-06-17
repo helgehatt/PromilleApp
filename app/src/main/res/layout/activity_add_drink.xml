@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:weightSum="1">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text="Name:"
+            android:id="@+id/textView3" />
+
+        <EditText
+            android:layout_width="200sp"
+            android:layout_height="match_parent"
+            android:text="Enter drink name"
+            android:id="@+id/textView4"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text="Alcohol content:"
+            android:id="@+id/textView5" />
+
+        <EditText
+            android:layout_width="60sp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:id="@+id/textView6"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/textView9"
+            android:layout_toStartOf="@+id/textView9" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="%"
+            android:id="@+id/textView9" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text="Volume:"
+            android:id="@+id/textView7" />
+
+        <EditText
+            android:layout_width="100sp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:id="@+id/textView10"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/textView8" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="cl"
+            android:id="@+id/textView8" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text="Kcal (optional):"
+            android:id="@+id/textView11" />
+
+        <EditText
+            android:layout_width="100sp"
+            android:layout_height="match_parent"
+            android:text=""
+            android:id="@+id/textView13"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/textView12" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="kcal"
+            android:id="@+id/textView12" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="263dp"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="Delete"
+            android:id="@+id/button_delete"
+            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:clickable="true"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/guldoel" />
+    </RelativeLayout>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/button_cancel"
+            android:layout_weight="0.5" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:id="@+id/button_ok"
+            android:layout_weight="0.5" />
+
+    </TableRow>
+
+
+</LinearLayout>

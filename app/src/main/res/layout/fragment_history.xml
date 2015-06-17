@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/fragment_history"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="25dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/history_string1"
+        android:textSize="25dp"
+        android:id="@+id/textLeft1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="2.03"
+        android:gravity="right"
+        android:textSize="25dp"
+        android:layout_alignTop="@id/textLeft1"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textRight1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/history_string2"
+        android:textSize="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/textLeft1"
+        android:id="@+id/textLeft2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="2.03"
+        android:textSize="25dp"
+        android:layout_alignTop="@id/textLeft2"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textRight2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/history_string3"
+        android:textSize="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/textLeft2"
+        android:id="@+id/textLeft3"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="0 x Tuborg Guld"
+        android:textSize="25dp"
+        android:layout_alignTop="@id/textLeft3"
+        android:layout_alignParentRight="true"
+        android:id="@+id/textRight3"/>
+
+    <TableRow
+        android:id="@+id/tab_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textLeft3"
+        android:padding="5dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/history_info"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:id="@+id/button_info"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/history_graph"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:id="@+id/button_graph"/>
+    </TableRow>
+
+    <LinearLayout
+        android:id="@+id/tabLayout"
+        android:orientation="horizontal"
+        android:background="#FFF"
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tab_buttons">
+
+        <fragment
+            android:id="@+id/tab_info"
+            android:name="com.example.helge.alculator.TabInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/tab_info"/>
+
+        <fragment
+            android:id="@+id/tab_graph"
+            android:name="com.example.helge.alculator.TabGraph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/tab_graph"/>
+    </LinearLayout>
+
+    <!--<TabHost-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@id/textLeft3"-->
+        <!--android:layout_marginTop="35dp"-->
+        <!--android:layout_marginBottom="25dp"-->
+        <!--android:id="@+id/tabHost">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TabWidget-->
+                <!--android:id="@android:id/tabs"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+            <!--</TabWidget>-->
+
+            <!--<FrameLayout-->
+                <!--android:id="@android:id/tabcontent"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="#FFF"-->
+                <!--android:padding="2dp">-->
+
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/tab1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="#000"-->
+                    <!--android:padding="15dp"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tabLeft1"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:text="@string/history_string4"-->
+                        <!--android:textSize="25dp"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tabRight1"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:text="2.03"-->
+                        <!--android:textSize="25dp"-->
+                        <!--android:layout_alignTop="@+id/tabLeft1"-->
+                        <!--android:layout_alignParentRight="true"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tabLeft2"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="20dp"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:text="@string/history_string5"-->
+                        <!--android:textSize="25dp"-->
+                        <!--android:layout_below="@id/tabLeft1"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tabRight2"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:text="20"-->
+                        <!--android:textSize="25dp"-->
+                        <!--android:layout_alignTop="@+id/tabLeft2"-->
+                        <!--android:layout_alignParentRight="true"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tabLeft3"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="20dp"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:text="@string/history_string6"-->
+                        <!--android:textSize="25dp"-->
+                        <!--android:layout_below="@id/tabLeft2"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/tabRight3"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                        <!--android:text="515"-->
+                        <!--android:textSize="25dp"-->
+                        <!--android:layout_alignTop="@+id/tabLeft3"-->
+                        <!--android:layout_alignParentRight="true"/>-->
+
+                <!--</RelativeLayout>-->
+
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/tab2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="#000"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<com.jjoe64.graphview.GraphView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:id="@+id/graph" />-->
+
+                <!--</RelativeLayout>-->
+            <!--</FrameLayout>-->
+        <!--</LinearLayout>-->
+    <!--</TabHost>-->
+
+</RelativeLayout>
