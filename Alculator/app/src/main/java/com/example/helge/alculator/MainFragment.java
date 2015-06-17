@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 
 public class MainFragment extends Fragment implements OnClickListener {
+
+    private GridView mGrid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -21,6 +24,9 @@ public class MainFragment extends Fragment implements OnClickListener {
 
         Button remButton = (Button) view.findViewById(R.id.button_rem);
         remButton.setOnClickListener(this);
+
+        mGrid = (GridView) view.findViewById(R.id.gridView);
+        mGrid.setAdapter(new GridAdapter(getActivity().getApplicationContext()));
 
         return view;
     }
