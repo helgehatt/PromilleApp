@@ -16,6 +16,7 @@ import android.widget.Toast;
 public class MainFragment extends Fragment implements OnClickListener {
 
     private GridView mGrid;
+    private GridAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,11 +29,13 @@ public class MainFragment extends Fragment implements OnClickListener {
         remButton.setOnClickListener(this);
 
         mGrid = (GridView) view.findViewById(R.id.gridView);
-        mGrid.setAdapter(new GridAdapter(getActivity().getApplicationContext()));
+        mAdapter = new GridAdapter(getActivity().getApplicationContext());
+        mGrid.setAdapter(mAdapter);
         mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
+                mAdapter.getItem(position);
             }
         });
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

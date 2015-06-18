@@ -15,12 +15,13 @@ import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter {
     private final Context mContext;
-    private ArrayList<Integer> list = new ArrayList<>();
+    private ArrayList<Drink> list = new ArrayList<>();
 
     public GridAdapter(Context context) {
         mContext = context;
-        list.add(R.drawable.drink_beer_icon);
-        list.add(R.drawable.drink_shot_icon);
+        //Below items entered for testing
+        list.add(new Drink("A beer", 5.8, 50, R.drawable.drink_beer_icon));
+        list.add(new Drink("A shot", 30, 10, R.drawable.drink_shot_icon));
     }
 
     @Override
@@ -30,6 +31,7 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+        if (position == list.size()) return null;
         return list.get(position);
     }
 
@@ -61,13 +63,15 @@ public class GridAdapter extends BaseAdapter {
                 view.findViewById(R.id.gridtext_background).setVisibility(View.GONE);
                 image.setImageResource(R.drawable.alculator_newicon);
             } else {
+                Drink drink = list.get(position);
                 name.setVisibility(View.VISIBLE);
                 view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
-                name.setText("MooMoo");
-                image.setImageResource(list.get(position));
+                name.setText(drink.getName());
+                image.setImageResource(drink.getImageID());
             }
 
-        }/* else {
+        }
+        /* else {
             view = (RelativeLayout) convertView;
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
