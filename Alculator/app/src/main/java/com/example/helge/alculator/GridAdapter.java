@@ -40,10 +40,10 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        RelativeLayout view;
+        RelativeLayout view = (RelativeLayout) convertView;
         ImageView image;
         TextView name;
-        if (convertView == null) {
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = (RelativeLayout) inflater.inflate(R.layout.grid_item, null, false);
             image = (ImageView) view.findViewById(R.id.image);
@@ -55,13 +55,25 @@ public class GridAdapter extends BaseAdapter {
             int size = Math.round(mContext.getResources().getDimension(R.dimen.gridview_imagesize));
 
             view.setLayoutParams(new GridView.LayoutParams(size, size));
-        } else {
+
+            if (position == list.size()){
+                name.setVisibility(View.GONE);
+                view.findViewById(R.id.gridtext_background).setVisibility(View.GONE);
+                image.setImageResource(R.drawable.alculator_newicon);
+            } else {
+                name.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
+                name.setText("MooMoo");
+                image.setImageResource(list.get(position));
+            }
+
+        }/* else {
             view = (RelativeLayout) convertView;
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
-        }
+        }*/
 
-        if (position == list.size()){
+        /*if (position == list.size()){
             name.setVisibility(View.GONE);
             view.findViewById(R.id.gridtext_background).setVisibility(View.GONE);
             image.setImageResource(R.drawable.alculator_newicon);
@@ -70,7 +82,7 @@ public class GridAdapter extends BaseAdapter {
             view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
             name.setText("MooMoo");
             image.setImageResource(list.get(position));
-        }
+        }*/
 
         return view;
     }

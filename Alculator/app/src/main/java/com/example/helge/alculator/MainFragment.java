@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Toast;
 
 public class MainFragment extends Fragment implements OnClickListener {
 
@@ -27,7 +29,19 @@ public class MainFragment extends Fragment implements OnClickListener {
 
         mGrid = (GridView) view.findViewById(R.id.gridView);
         mGrid.setAdapter(new GridAdapter(getActivity().getApplicationContext()));
-
+        mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
+            }
+        });
+        mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity().getApplicationContext(), "Long click: Position: " + position, Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
 
         return view;
     }
