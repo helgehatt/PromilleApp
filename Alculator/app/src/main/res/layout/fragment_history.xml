@@ -44,17 +44,19 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/cVolume"
             android:text="1.33"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/tVolume"
             android:text="4.66"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
-            android:text="L"
+            android:text="l"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
@@ -74,11 +76,13 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/cQuantity"
             android:text="4"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/tQuantity"
             android:text="14"
             android:textSize="25dp"
             android:gravity="center"
@@ -103,17 +107,19 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/cAlcohol"
             android:text="60"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/tAlcohol"
             android:text="220"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
-            android:text="mL"
+            android:text="ml"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
@@ -133,11 +139,13 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/cCalories"
             android:text="540"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/tCalories"
             android:text="1890"
             android:textSize="25dp"
             android:gravity="center"

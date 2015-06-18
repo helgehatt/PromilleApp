@@ -10,8 +10,6 @@
         android:layout_height="wrap_content">
 
         <TextView
-
-            android:id="@+id/score_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
@@ -22,6 +20,7 @@
             android:layout_marginBottom="25dp"/>
 
         <TextView
+            android:id="@+id/score_high"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
@@ -37,7 +36,6 @@
         android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/score_current"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -48,6 +46,7 @@
                 android:layout_marginBottom="25dp"/>
 
             <TextView
+                android:id="@+id/score_current"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -63,7 +62,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/score_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -74,6 +72,7 @@
                 android:layout_marginBottom="25dp"/>
 
             <TextView
+                android:id="@+id/score_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -84,30 +83,9 @@
 
         </TableRow>
 
-    <!--    <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/button_reset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="RESET"/>
-
-            <Button
-                android:id="@+id/button_update"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="UPDATE"/>
-
-        </TableRow>-->
-
-
     <com.jjoe64.graphview.GraphView
+        android:id="@+id/graphView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/graphView" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
