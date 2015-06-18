@@ -28,6 +28,7 @@ public class MainFragment extends Fragment implements OnClickListener {
         mGrid = (GridView) view.findViewById(R.id.gridView);
         mGrid.setAdapter(new GridAdapter(getActivity().getApplicationContext()));
 
+
         return view;
     }
 

@@ -1,16 +1,15 @@
 package com.example.helge.alculator;
 
-import android.app.Activity;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-
-import com.example.helge.alculator.R;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,7 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.size();
+        return list.size()+1;
     }
 
     @Override
@@ -41,21 +40,38 @@ public class GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        RelativeLayout view;
+        ImageView image;
+        TextView name;
         if (convertView == null) {
-            imageView = new ImageView(mContext);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = (RelativeLayout) inflater.inflate(R.layout.grid_item, null, false);
+            image = (ImageView) view.findViewById(R.id.image);
+            name = (TextView) view.findViewById(R.id.name);
 
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            view.setPadding(8, 8, 8, 8);
 
-            int size = Math.round(mContext.getResources().getDimension(R.dimen.gridview_columnwidth));
+            int size = Math.round(mContext.getResources().getDimension(R.dimen.gridview_imagesize));
 
-            imageView.setLayoutParams(new GridView.LayoutParams(size, size));
+            view.setLayoutParams(new GridView.LayoutParams(size, size));
         } else {
-            imageView = (ImageView) convertView;
+            view = (RelativeLayout) convertView;
+            image = (ImageView) view.findViewById(R.id.image);
+            name = (TextView) view.findViewById(R.id.name);
         }
 
-        imageView.setImageResource(list.get(position));
-        return imageView;
+        if (position == list.size()){
+            name.setVisibility(View.GONE);
+            view.findViewById(R.id.gridtext_background).setVisibility(View.GONE);
+            image.setImageResource(R.drawable.alculator_newicon);
+        } else {
+            name.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
+            name.setText("MooMoo");
+            image.setImageResource(list.get(position));
+        }
+
+        return view;
     }
 }

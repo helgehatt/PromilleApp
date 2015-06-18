@@ -55,19 +55,20 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:background="#FFF"
+        android:background="@drawable/btn_white_matte"
         android:layout_below="@id/textTimer"
         android:layout_above="@id/buttonLayout">
 
         <GridView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="#000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:gravity="center"
+            android:scrollbarFadeDuration="0"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
             android:id="@+id/gridView"
-            android:longClickable="true"
-            android:numColumns="2"/>
+            android:numColumns="auto_fit"/>
 
     </RelativeLayout>
 
