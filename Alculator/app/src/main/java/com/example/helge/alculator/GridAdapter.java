@@ -1,6 +1,7 @@
 package com.example.helge.alculator;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 public class GridAdapter extends BaseAdapter {
     private final Context mContext;
     private ArrayList<Drink> list = new ArrayList<>();
+    private int selectedItem;
 
     public GridAdapter(Context context) {
         mContext = context;
@@ -30,7 +32,7 @@ public class GridAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Drink getItem(int position) {
         if (position == list.size()) return null;
         return list.get(position);
     }
@@ -52,11 +54,10 @@ public class GridAdapter extends BaseAdapter {
             name = (TextView) view.findViewById(R.id.name);
 
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            view.setPadding(8, 8, 8, 8);
 
-            int size = Math.round(mContext.getResources().getDimension(R.dimen.gridview_imagesize));
+            int imageSize = Math.round(mContext.getResources().getDimension(R.dimen.gridview_imagesize));
 
-            view.setLayoutParams(new GridView.LayoutParams(size, size));
+            view.setLayoutParams(new GridView.LayoutParams(imageSize, imageSize));
 
             if (position == list.size()){
                 name.setVisibility(View.GONE);
@@ -68,6 +69,7 @@ public class GridAdapter extends BaseAdapter {
                 view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
                 name.setText(drink.getName());
                 image.setImageResource(drink.getImageID());
+                //if (drink.isSelected()) view.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_matte));
             }
 
         }
@@ -89,5 +91,14 @@ public class GridAdapter extends BaseAdapter {
         }*/
 
         return view;
+    }
+
+    public boolean setSelected(int position) {
+        if (position == list.size()) return true;
+        if (0 <= position && position < list.size()){
+            list.get(selectedItem).setSelected(false);
+            list.get(position).setSelected(true);
+        }
+        return false;
     }
 }

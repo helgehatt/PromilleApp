@@ -7,6 +7,8 @@ public class Drink {
     private double alcoholPercent;
     private double volume;
     private double calories;
+    private int quantity = 0;
+    private boolean selected = false;
 
     //Constructor
     public Drink(String name, double percent, double volume, int imageID){
@@ -46,6 +48,22 @@ public class Drink {
         this.volume = volume;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void incQuantity(){
+        this.quantity++;
+    }
+
+    public void decQuantity(){
+        if (0 < quantity) this.quantity--;
+    }
+
     public int getImageID() {
         return imageID;
     }
@@ -60,5 +78,13 @@ public class Drink {
 
     public void setCalories(double calories) {
         this.calories = calories;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 }

@@ -35,13 +35,17 @@ public class MainFragment extends Fragment implements OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
-                mAdapter.getItem(position);
+                if (mAdapter.setSelected(position))
+                    startActivity(new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class));
             }
         });
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Long click: Position: " + position, Toast.LENGTH_LONG).show();
+                Dialog dialog = new Dialog();
+                dialog.setTargetFragment(MainFragment.this, 1);
+                dialog.show(getFragmentManager(), "Dialog");
                 return true;
             }
         });
