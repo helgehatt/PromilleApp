@@ -37,7 +37,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_string_add"
+            android:text="@string/main_button_add"
             android:textSize="30dp"
             android:layout_weight="1"
             android:layout_marginRight="80dp"
@@ -46,7 +46,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_string_rem"
+            android:text="@string/main_button_rem"
             android:textSize="30dp"
             android:layout_weight="1"
             android:id="@+id/button_rem"/>

@@ -1,15 +1,19 @@
 <resources>
     <string name="app_name">Alculator</string>
 
-    <string name="history_content">Content:</string>
-    <string name="history_drinks">Drinks:</string>
-    <string name="history_calories">Calories:</string>
+    <string name="history_current">Current</string>
+    <string name="history_total">Total</string>
+    <string name="history_volume">Volume</string>
+    <string name="history_quantity">Quantity</string>
+    <string name="history_alcohol">Alcohol</string>
+    <string name="history_calories">Calories</string>
+
     <string name="graph_score_high">High Score:</string>
     <string name="graph_score_current">Current Score:</string>
     <string name="graph_score_count">High Score in:</string>
 
-    <string name="main_string_add">+</string>
-    <string name="main_string_rem">-</string>
+    <string name="main_button_add">+</string>
+    <string name="main_button_rem">-</string>
 
     <string name="metric">Metric</string>
     <string name="imperial">Imperial</string>

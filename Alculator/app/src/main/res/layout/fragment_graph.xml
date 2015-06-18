@@ -1,39 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="25dp"
-                android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="25dp"
+              android:orientation="vertical">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/score_high"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/graph_score_high"
-                android:textSize="30dp"
-                android:layout_marginBottom="25dp"/>
+        <TextView
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="3.33‰"
-                android:textSize="30dp"/>
+            android:id="@+id/score_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/graph_score_high"
+            android:textSize="30dp"
+            android:layout_marginBottom="25dp"/>
 
-        </TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="3.33‰"
+            android:textSize="30dp"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/score_current"
@@ -78,15 +79,35 @@
                 android:gravity="right"
                 android:layout_weight="1"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="4 fl."
+                android:text="4 x"
                 android:textSize="30dp"/>
 
         </TableRow>
 
+    <!--    <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="RESET"/>
+
+            <Button
+                android:id="@+id/button_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="UPDATE"/>
+
+        </TableRow>-->
+
 
     <com.jjoe64.graphview.GraphView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/graphView" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/graphView" />
 
 </LinearLayout>

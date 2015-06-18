@@ -1,186 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/fragment_history"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:padding="25dp"
-              android:orientation="vertical">
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:padding="25dp">
 
-    <TextView
-        android:id="@+id/stats_total"
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:gravity="center">
+        <TextView
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="@string/history_current"
+            android:textSize="25dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="left"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="@string/history_total"
+            android:textSize="25dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="right"
+            android:layout_weight="1"/>
+        <TextView
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+    </TableRow>
+
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+
+    <TableRow
+        android:layout_width="match_parent"
         android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Total Stats:"
-        android:textSize="30dp"/>
+        android:gravity="center">
+        <TextView
+            android:text="@string/history_volume"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="1.33"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="4.66"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="L"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+    </TableRow>
+
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/content_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/history_content"
-            android:textSize="25dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="6.33 L"
-            android:textSize="25dp"/>
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/units_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/history_drinks"
-            android:textSize="25dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="19 fl"
-            android:textSize="25dp"/>
-
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/calories_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/history_calories"
-            android:textSize="25dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="2305 kcal"
-            android:textSize="25dp"/>
-
-    </TableRow>
-
-
-    <TextView
-        android:id="@+id/stats_current"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Current Stats:"
-        android:textSize="30dp"/>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
+        android:gravity="center">
         <TextView
-            android:id="@+id/content_current"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/history_content"
-            android:textSize="25dp"/>
-
+            android:text="@string/history_quantity"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="1.66 L"
-            android:textSize="25dp"/>
-
+            android:text="4"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="14"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
     </TableRow>
 
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
+        android:layout_weight="1"
+        android:gravity="center">
         <TextView
-            android:id="@+id/units_current"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/history_drinks"
-            android:textSize="25dp"/>
-
+            android:text="@string/history_alcohol"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="5 fl"
-            android:textSize="25dp"/>
-
+            android:text="60"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="220"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="mL"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
     </TableRow>
 
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
+        android:layout_weight="1"
+        android:gravity="center">
         <TextView
-            android:id="@+id/calories_current"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/history_calories"
-            android:textSize="25dp"/>
-
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="640 kcal"
-            android:textSize="25dp"/>
-
+            android:text="540"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="1890"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+        <TextView
+            android:text="kcal"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
     </TableRow>
 
-
-
-</LinearLayout>
+</TableLayout>
