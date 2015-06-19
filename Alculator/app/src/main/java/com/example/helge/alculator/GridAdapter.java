@@ -25,7 +25,7 @@ public class GridAdapter extends BaseAdapter {
     public GridAdapter(Context context) {
         mContext = context;
         //Below items entered for testing
-        list.add(new Drink("A beer", 5.8, 50, R.drawable.drink_black_box));
+        list.add(new Drink("A beer", 4.5, 33, R.drawable.drink_black_box));
         list.add(new Drink("A shot", 30, 10, R.drawable.drink_black_box));
     }
 

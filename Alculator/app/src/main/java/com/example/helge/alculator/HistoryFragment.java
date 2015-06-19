@@ -21,7 +21,8 @@ public class HistoryFragment extends Fragment {
     private TextView cVolumeView, cQuantityView, cAlcoholView, cCaloriesView;
     private TextView tVolumeView, tQuantityView, tAlcoholView, tCaloriesView;
 
-    private static final DecimalFormat df = new DecimalFormat("#####.#");
+    private static final DecimalFormat df = new DecimalFormat("######.#");
+    private static final DecimalFormat pf = new DecimalFormat("#####0.0#");
 
     private SharedPreferences cPrefs, tPrefs;
 
@@ -148,18 +149,18 @@ public class HistoryFragment extends Fragment {
         cPrefs.edit().clear().apply();
     }
 
-    private SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
-        return edit.putLong(key, Double.doubleToRawLongBits(value));
-    }
-
     double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
 
+    private SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
+        return edit.putLong(key, Double.doubleToRawLongBits(value));
+    }
+
     public void updateLabels() {
 
-        cVolumeView.setText("" + cVolume);
-        tVolumeView.setText("" + tVolume);
+        cVolumeView.setText(pf.format(cVolume));
+        tVolumeView.setText(pf.format(tVolume));
 
         cQuantityView.setText("" + cQuantity);
         tQuantityView.setText("" + tQuantity);

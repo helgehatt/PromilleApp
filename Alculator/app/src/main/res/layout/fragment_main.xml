@@ -6,21 +6,21 @@
                 android:layout_height="fill_parent">
 
     <TextView
+        android:id="@+id/textNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40dp"
         android:text="2.03‰"
-        android:id="@+id/textNumber"
         android:layout_centerHorizontal="true"/>
 
     <TextView
+        android:id="@+id/textTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="30dp"
         android:text="Sober in 12 hours"
-        android:id="@+id/textTimer"
         android:layout_below="@+id/textNumber"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"

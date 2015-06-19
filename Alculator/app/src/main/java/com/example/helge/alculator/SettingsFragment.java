@@ -27,7 +27,7 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         kgLbsView = (TextView) view.findViewById(R.id.textView_kg_lbs);
 
-        settings = getActivity().getPreferences(Context.MODE_PRIVATE);
+        settings = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
 
         RadioGroup unit = (RadioGroup) view.findViewById(R.id.radioGroup_unit);
         unit.setOnCheckedChangeListener(this);
