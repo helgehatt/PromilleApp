@@ -61,7 +61,7 @@ public class Drink {
     }
 
     public void decQuantity(){
-        if (0 < quantity) this.quantity--;
+        this.quantity--;
     }
 
     public int getImageID() {

@@ -20,10 +20,21 @@ public class MainFragment extends Fragment {
 
     private GridView mGrid;
     private GridAdapter mAdapter;
+    private HistoryFragment mHistory;
+
+    static MainFragment init(int val) {
+        MainFragment frag = new MainFragment();
+        Bundle args = new Bundle();
+        args.putInt("val", val);
+        frag.setArguments(args);
+        return frag;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mHistory = getHistory();
 
         Button addButton = (Button) view.findViewById(R.id.button_add);
         addButton.setOnClickListener(new OnClickListener() {
@@ -35,6 +46,7 @@ public class MainFragment extends Fragment {
                     Log.i(TAG, "Increment drink");
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
+                    mHistory.addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories(), getActivity());
                 }
             }
         });
@@ -45,10 +57,13 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 Drink drink = mAdapter.getSelectedItem();
                 if (drink != null) {
-                    drink.decQuantity();
-                    Log.i(TAG, "Decrement drink");
-                    mAdapter.notifyDataSetChanged();
-                    mGrid.invalidateViews();
+                    if (drink.getQuantity() > 0) {
+                        drink.decQuantity();
+                        Log.i(TAG, "Decrement drink");
+                        mAdapter.notifyDataSetChanged();
+                        mGrid.invalidateViews();
+                        mHistory.remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories(), getActivity());
+                    }
                 }
             }
         });
@@ -78,5 +93,13 @@ public class MainFragment extends Fragment {
         Log.i(TAG, "CreateView()");
 
         return view;
+    }
+
+    private HistoryFragment getHistory() {
+        String tagName = "android:switcher:" + R.id.pager + ":" + 0;
+        HistoryFragment history = (HistoryFragment) getActivity().getSupportFragmentManager().findFragmentByTag(tagName);
+        if (null == history)
+            return new HistoryFragment();
+        return history;
     }
 }

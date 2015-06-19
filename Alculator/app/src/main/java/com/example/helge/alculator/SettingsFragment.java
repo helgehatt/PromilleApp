@@ -16,6 +16,14 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
     private SharedPreferences settings;
     private TextView kgLbsView;
 
+    static SettingsFragment init(int val) {
+        SettingsFragment frag = new SettingsFragment();
+        Bundle args = new Bundle();
+        args.putInt("val", val);
+        frag.setArguments(args);
+        return frag;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

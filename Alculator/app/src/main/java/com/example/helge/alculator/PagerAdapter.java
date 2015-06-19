@@ -39,14 +39,29 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new HistoryFragment();
+                return HistoryFragment.init(position);
             case 1:
-                return new GraphFragment();
+                return GraphFragment.init(position);
             case 2:
-                return new MainFragment();
+                return MainFragment.init(position);
             case 3:
-                return new SettingsFragment();
+                return SettingsFragment.init(position);
         }
         return null;
     }
+
+//    @Override
+//    public Fragment getItem(int position) {
+//        switch (position) {
+//            case 0:
+//                return new HistoryFragment();
+//            case 1:
+//                return new GraphFragment();
+//            case 2:
+//                return new MainFragment();
+//            case 3:
+//                return new SettingsFragment();
+//        }
+//        return null;
+//    }
 }

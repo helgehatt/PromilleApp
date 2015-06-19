@@ -1,5 +1,7 @@
 package com.example.helge.alculator;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,9 +23,67 @@ public class HistoryFragment extends Fragment {
 
     private static final DecimalFormat df = new DecimalFormat("#####.#");
 
+    private SharedPreferences cPrefs, tPrefs;
+
+    static HistoryFragment init(int val) {
+        HistoryFragment frag = new HistoryFragment();
+        Bundle args = new Bundle();
+        args.putInt("val", val);
+        frag.setArguments(args);
+        return frag;
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
+
+        getViews(view);
+
+        getPrefs(getActivity());
+
+        updateLabels();
+
+        return view;
+    }
+
+    public void addDrink(double volume, double alcohol, double calories, Context context) {
+        getPrefs(context);
+
+        cVolume += volume / 100;
+        tVolume += volume / 100;
+
+        cQuantity ++;
+        tQuantity ++;
+
+        cAlcohol += volume * alcohol / 10;
+        tAlcohol += volume * alcohol / 10;
+
+        cCalories += calories;
+        tCalories += calories;
+
+        setPrefs();
+    }
+
+    public void remDrink(double volume, double alcohol, double calories, Context context) {
+        getPrefs(context);
+
+        cVolume -= volume / 100;
+        tVolume -= volume / 100;
+
+        cQuantity --;
+        tQuantity --;
+
+        cAlcohol -= volume * alcohol / 10;
+        tAlcohol -= volume * alcohol / 10;
+
+        cCalories -= calories;
+        tCalories -= calories;
+
+        setPrefs();
+    }
+
+    public void getViews(View view) {
 
         cVolumeView = (TextView) view.findViewById(R.id.cVolume);
         tVolumeView = (TextView) view.findViewById(R.id.tVolume);
@@ -36,52 +96,76 @@ public class HistoryFragment extends Fragment {
 
         cCaloriesView = (TextView) view.findViewById(R.id.cCalories);
         tCaloriesView = (TextView) view.findViewById(R.id.tCalories);
-
-        updateLabels();
-        return view;
     }
 
-    public void addHistory(double volume, double alcohol) {
+    public void getPrefs(Context context) {
+        if (null == cPrefs)
+            cPrefs = context.getSharedPreferences("current", Context.MODE_PRIVATE);
 
-        cVolume += volume / 100;
-        tVolume += volume / 100;
+        if (null == tPrefs)
+            tPrefs = context.getSharedPreferences("total", Context.MODE_PRIVATE);
 
-        cQuantity ++;
-        tQuantity ++;
+        cVolume = getDouble(cPrefs, "cVolume", 0);
+        tVolume = getDouble(tPrefs, "tVolume", 0);
 
-        cAlcohol += volume * alcohol / 10;
-        tAlcohol += volume * alcohol / 10;
+        cQuantity = cPrefs.getInt("cQuantity", 0);
+        tQuantity = tPrefs.getInt("tQuantity", 0);
+
+        cAlcohol = getDouble(cPrefs, "cAlcohol", 0);
+        tAlcohol = getDouble(tPrefs, "tAlcohol", 0);
+
+        cCalories = getDouble(cPrefs, "cCalories", 0);
+        tCalories = getDouble(tPrefs, "tCalories", 0);
     }
 
-    public void addHistory(double volume, double alcohol, double calories) {
+    public void setPrefs() {
 
-        addHistory(volume, alcohol);
+        SharedPreferences.Editor cEditor = cPrefs.edit();
+        SharedPreferences.Editor tEditor = tPrefs.edit();
 
-        cCalories += calories;
-        tCalories += calories;
+        putDouble(cEditor, "cVolume", cVolume);
+        putDouble(tEditor, "tVolume", tVolume);
+
+        cEditor.putInt("cQuantity", cQuantity);
+        tEditor.putInt("tQuantity", tQuantity);
+
+        putDouble(cEditor, "cAlcohol", cAlcohol);
+        putDouble(tEditor, "tAlcohol", tAlcohol);
+
+        putDouble(cEditor, "cCalories", cCalories);
+        putDouble(tEditor,"tCalories", tCalories);
+
+        cEditor.apply();
+        tEditor.apply();
     }
 
-    public void remHistory(double volume, double alcohol) {
+    public void resetAllPrefs(Context context) {
+        if (null == cPrefs)
+            cPrefs = context.getSharedPreferences("current", Context.MODE_PRIVATE);
 
-        cVolume -= volume / 100;
-        tVolume -= volume / 100;
+        if (null == tPrefs)
+            tPrefs = context.getSharedPreferences("total", Context.MODE_PRIVATE);
 
-        cQuantity --;
-        tQuantity --;
-
-        cAlcohol -= volume * alcohol / 10;
-        tAlcohol -= volume * alcohol / 10;
+        cPrefs.edit().clear().apply();
+        tPrefs.edit().clear().apply();
     }
 
-    public void remHistory(double volume, double alcohol, double calories) {
+    public void resetCurrentPrefs(Context context) {
+        if (null == cPrefs)
+            cPrefs = context.getSharedPreferences("current", Context.MODE_PRIVATE);
 
-        remHistory(volume, alcohol);
-
-        cCalories -= calories;
-        tCalories -= calories;
+        cPrefs.edit().clear().apply();
     }
 
-    public boolean updateLabels() {
+    private SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
+        return edit.putLong(key, Double.doubleToRawLongBits(value));
+    }
+
+    double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
+        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
+    }
+
+    public void updateLabels() {
 
         cVolumeView.setText("" + cVolume);
         tVolumeView.setText("" + tVolume);
@@ -94,7 +178,5 @@ public class HistoryFragment extends Fragment {
 
         cCaloriesView.setText(df.format(cCalories));
         tCaloriesView.setText(df.format(tCalories));
-
-        return true;
     }
 }
