@@ -2,8 +2,10 @@ package com.example.helge.alculator;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +16,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 public class MainFragment extends Fragment {
+    private final String TAG = "Alculator";
 
     private GridView mGrid;
     private GridAdapter mAdapter;
@@ -27,8 +30,12 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Drink drink = mAdapter.getSelectedItem();
-                if (drink != null)
+                if (drink != null){
                     drink.incQuantity();
+                    Log.i(TAG, "Increment drink");
+                    mAdapter.notifyDataSetChanged();
+                    mGrid.invalidateViews();
+                }
             }
         });
 
@@ -37,8 +44,12 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Drink drink = mAdapter.getSelectedItem();
-                if (drink != null)
+                if (drink != null) {
                     drink.decQuantity();
+                    Log.i(TAG, "Decrement drink");
+                    mAdapter.notifyDataSetChanged();
+                    mGrid.invalidateViews();
+                }
             }
         });
 
@@ -51,7 +62,6 @@ public class MainFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
                 if (mAdapter.setSelected(position))
                     startActivity(new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class));
-                mGrid.invalidate();
             }
         });
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -64,6 +74,8 @@ public class MainFragment extends Fragment {
                 return true;
             }
         });
+
+        Log.i(TAG, "CreateView()");
 
         return view;
     }

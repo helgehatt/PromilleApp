@@ -2,6 +2,7 @@ package com.example.helge.alculator;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter {
+    private final String TAG = "Alculator";
+
     private final Context mContext;
     private ArrayList<Drink> list = new ArrayList<>();
     private int selectedItem;
@@ -22,8 +25,8 @@ public class GridAdapter extends BaseAdapter {
     public GridAdapter(Context context) {
         mContext = context;
         //Below items entered for testing
-        list.add(new Drink("A beer", 5.8, 50, R.drawable.drink_beer_icon));
-        list.add(new Drink("A shot", 30, 10, R.drawable.drink_shot_icon));
+        list.add(new Drink("A beer", 5.8, 50, R.drawable.drink_black_box));
+        list.add(new Drink("A shot", 30, 10, R.drawable.drink_black_box));
     }
 
     @Override
@@ -47,11 +50,15 @@ public class GridAdapter extends BaseAdapter {
         RelativeLayout view = (RelativeLayout) convertView;
         ImageView image;
         TextView name;
+        TextView counter;
+        ImageView textbackground;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = (RelativeLayout) inflater.inflate(R.layout.grid_item, null, false);
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
+            counter = (TextView) view.findViewById(R.id.counter);
+            textbackground = (ImageView) view.findViewById(R.id.gridtext_background);
 
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -59,22 +66,34 @@ public class GridAdapter extends BaseAdapter {
 
             view.setLayoutParams(new GridView.LayoutParams(imageSize, imageSize));
         } else {
-            view = (RelativeLayout) convertView;
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
+            counter = (TextView) view.findViewById(R.id.counter);
+            textbackground = (ImageView) view.findViewById(R.id.gridtext_background);
         }
 
         if (position == list.size()){
             name.setVisibility(View.GONE);
-            view.findViewById(R.id.gridtext_background).setVisibility(View.GONE);
+            textbackground.setVisibility(View.GONE);
+            counter.setVisibility(View.GONE);
             image.setImageResource(R.drawable.alculator_newicon);
         } else {
             Drink drink = list.get(position);
             name.setVisibility(View.VISIBLE);
-            view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
+            textbackground.setVisibility(View.VISIBLE);
+            counter.setVisibility(View.VISIBLE);
             name.setText(drink.getName());
+
+            int quantity = drink.getQuantity();
+            if (0 < quantity)
+                counter.setText(""+quantity);
+            else
+                counter.setText("");
+
             image.setImageResource(drink.getImageID());
         }
+
+        Log.i(TAG, "Draw view in grid.");
 
         return view;
     }
@@ -84,6 +103,7 @@ public class GridAdapter extends BaseAdapter {
         if (0 <= position && position < list.size()){
             list.get(selectedItem).setSelected(false);
             list.get(position).setSelected(true);
+            selectedItem = position;
         }
         return false;
     }
