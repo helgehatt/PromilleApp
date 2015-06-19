@@ -58,37 +58,23 @@ public class GridAdapter extends BaseAdapter {
             int imageSize = Math.round(mContext.getResources().getDimension(R.dimen.gridview_imagesize));
 
             view.setLayoutParams(new GridView.LayoutParams(imageSize, imageSize));
-
-            if (position == list.size()){
-                name.setVisibility(View.GONE);
-                view.findViewById(R.id.gridtext_background).setVisibility(View.GONE);
-                image.setImageResource(R.drawable.alculator_newicon);
-            } else {
-                Drink drink = list.get(position);
-                name.setVisibility(View.VISIBLE);
-                view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
-                name.setText(drink.getName());
-                image.setImageResource(drink.getImageID());
-                //if (drink.isSelected()) view.setBackground(mContext.getResources().getDrawable(R.drawable.btn_white_matte));
-            }
-
-        }
-        /* else {
+        } else {
             view = (RelativeLayout) convertView;
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
-        }*/
+        }
 
-        /*if (position == list.size()){
+        if (position == list.size()){
             name.setVisibility(View.GONE);
             view.findViewById(R.id.gridtext_background).setVisibility(View.GONE);
             image.setImageResource(R.drawable.alculator_newicon);
         } else {
+            Drink drink = list.get(position);
             name.setVisibility(View.VISIBLE);
             view.findViewById(R.id.gridtext_background).setVisibility(View.VISIBLE);
-            name.setText("MooMoo");
-            image.setImageResource(list.get(position));
-        }*/
+            name.setText(drink.getName());
+            image.setImageResource(drink.getImageID());
+        }
 
         return view;
     }
@@ -100,5 +86,12 @@ public class GridAdapter extends BaseAdapter {
             list.get(position).setSelected(true);
         }
         return false;
+    }
+
+    public Drink getSelectedItem() {
+        if (0 <= selectedItem && selectedItem < list.size()){
+            return list.get(selectedItem);
+        }
+        return null;
     }
 }

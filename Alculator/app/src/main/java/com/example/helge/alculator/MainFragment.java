@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class MainFragment extends Fragment implements OnClickListener {
+public class MainFragment extends Fragment {
 
     private GridView mGrid;
     private GridAdapter mAdapter;
@@ -23,10 +23,24 @@ public class MainFragment extends Fragment implements OnClickListener {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         Button addButton = (Button) view.findViewById(R.id.button_add);
-        addButton.setOnClickListener(this);
+        addButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drink drink = mAdapter.getSelectedItem();
+                if (drink != null)
+                    drink.incQuantity();
+            }
+        });
 
         Button remButton = (Button) view.findViewById(R.id.button_rem);
-        remButton.setOnClickListener(this);
+        remButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drink drink = mAdapter.getSelectedItem();
+                if (drink != null)
+                    drink.decQuantity();
+            }
+        });
 
         mGrid = (GridView) view.findViewById(R.id.gridView);
         mAdapter = new GridAdapter(getActivity().getApplicationContext());
@@ -37,6 +51,7 @@ public class MainFragment extends Fragment implements OnClickListener {
                 Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
                 if (mAdapter.setSelected(position))
                     startActivity(new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class));
+                mGrid.invalidate();
             }
         });
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -51,20 +66,5 @@ public class MainFragment extends Fragment implements OnClickListener {
         });
 
         return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.button_add:
-                Dialog dialog = new Dialog();
-                dialog.setTargetFragment(this, 1);
-                dialog.show(getFragmentManager(), "Dialog");
-                break;
-            case R.id.button_rem:
-                startActivity(new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class));
-                break;
-        }
     }
 }
