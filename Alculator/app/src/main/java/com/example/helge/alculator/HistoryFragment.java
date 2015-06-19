@@ -25,15 +25,6 @@ public class HistoryFragment extends Fragment {
 
     private SharedPreferences cPrefs, tPrefs;
 
-    static HistoryFragment init(int val) {
-        HistoryFragment frag = new HistoryFragment();
-        Bundle args = new Bundle();
-        args.putInt("val", val);
-        frag.setArguments(args);
-        return frag;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);

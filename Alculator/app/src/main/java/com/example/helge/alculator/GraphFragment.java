@@ -27,14 +27,6 @@ public class GraphFragment extends Fragment {
     private static final DecimalFormat df = new DecimalFormat("00");
     private static int DAYS = 0;
 
-    static GraphFragment init(int val) {
-        GraphFragment frag = new GraphFragment();
-        Bundle args = new Bundle();
-        args.putInt("val", val);
-        frag.setArguments(args);
-        return frag;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graph, container, false);

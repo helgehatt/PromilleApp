@@ -22,14 +22,6 @@ public class MainFragment extends Fragment {
     private GridAdapter mAdapter;
     private HistoryFragment mHistory;
 
-    static MainFragment init(int val) {
-        MainFragment frag = new MainFragment();
-        Bundle args = new Bundle();
-        args.putInt("val", val);
-        frag.setArguments(args);
-        return frag;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
