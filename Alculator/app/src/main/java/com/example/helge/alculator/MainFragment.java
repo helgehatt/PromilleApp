@@ -75,9 +75,9 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Long click: Position: " + position, Toast.LENGTH_LONG).show();
-                Dialog dialog = new Dialog();
-                dialog.setTargetFragment(MainFragment.this, 1);
-                dialog.show(getFragmentManager(), "Dialog");
+                Drink drink = mAdapter.getSelectedItem();
+                Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), drink.getImageID())
+                        .show(getFragmentManager(), "Dialog");
                 return true;
             }
         });
