@@ -42,7 +42,6 @@ public class MainFragment extends Fragment {
     private static final DecimalFormat sf = new DecimalFormat("##");
 
     static final int ADD_DRINK_REQUEST = 0;
-    static final String ADD_DRINK_KEY = "drink";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -252,29 +251,26 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (ADD_DRINK_REQUEST == requestCode && Activity.RESULT_OK == resultCode){
-            try {
-                Bundle bundle = data.getExtras();
-                String name = bundle.getString(AddDrinkActivity.NAME);
-                double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
-                double volume = Double.parseDouble(bundle.getString(AddDrinkActivity.VOLUME));
+            Bundle bundle = data.getExtras();
+            String name = bundle.getString(AddDrinkActivity.NAME);
+            double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
+            double volume = Double.parseDouble(bundle.getString(AddDrinkActivity.VOLUME));
 
-                String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
-                double calories = 0;
-                if (!caloriesString.isEmpty()) {
-                    calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
-                }
-
-                //Uncompress image.
-                byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
-                Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                Drink newDrink = new Drink(name, alcohol, volume, calories, image);
-                mAdapter.add(newDrink);
-                mAdapter.notifyDataSetChanged();
-                mGrid.invalidateViews();
-            } catch (Exception e) {
-                Toast.makeText(getActivity().getApplicationContext(), "Missing fields - no drink added", Toast.LENGTH_LONG).show();
+            String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
+            double calories = 0;
+            if (!caloriesString.isEmpty()) {
+                calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
             }
+
+            //Uncompress image.
+            byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
+            Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+            Drink newDrink = new Drink(name, alcohol, volume, calories, image);
+            mAdapter.addToDatabase(name, alcohol, volume, calories, 1); // TODO add image resource to device and save resource id to database
+            mAdapter.add(newDrink);
+            mAdapter.notifyDataSetChanged();
+            mGrid.invalidateViews();
         } else if (resultCode == Activity.RESULT_CANCELED && requestCode == ADD_DRINK_REQUEST) {
             Toast.makeText(getActivity().getApplicationContext(), "No drink added", Toast.LENGTH_LONG).show();
         }
