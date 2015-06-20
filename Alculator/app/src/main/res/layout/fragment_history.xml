@@ -89,6 +89,7 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
+            android:text="x"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
@@ -120,7 +121,7 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
-            android:text="ml"
+            android:text="cl"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>

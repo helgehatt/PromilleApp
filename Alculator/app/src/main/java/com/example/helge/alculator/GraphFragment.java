@@ -15,6 +15,8 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
@@ -27,8 +29,10 @@ public class GraphFragment extends Fragment {
     private LineGraphSeries<DataPoint> mSeries;
     private static final DecimalFormat df = new DecimalFormat("00");
     private static final DecimalFormat pf = new DecimalFormat("#0.00");
+    private static final DecimalFormat sf = new DecimalFormat("##");
     private static int DAYS = 0;
-    private static long mDrinkingStart = System.currentTimeMillis();
+
+    private SharedPreferences cPrefs, tPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,45 +62,16 @@ public class GraphFragment extends Fragment {
         mViewport.setScrollable(true);
         mViewport.setScalable(true);
 
-        setScores(getActivity());
-
         updateLabels();
         return view;
     }
 
-    protected double setScores(Context context) {
-        SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        SharedPreferences cHistory = context.getSharedPreferences("current", Context.MODE_PRIVATE);
-        SharedPreferences tHistory = context.getSharedPreferences("total", Context.MODE_PRIVATE);
-
-        String mGender = settings.getString("gender", "Male");
-
-        double mBodyWater = mGender.equals("Male") ? 0.58 : 0.49;
-        double mNumStdDrinks = getDouble(cHistory, "cAlcohol", 0) * 0.798 / 10;
-        int mBodyWeight = settings.getInt("weight", 0);
-        double mMetabolism = mGender.equals("Male") ? 0.015 : 0.017;
-        long mTimeSinceStart = (System.currentTimeMillis() - mDrinkingStart) / 3600000;
-
-        mCurrentScore = (0.806 * mNumStdDrinks * 1.2 / mBodyWater / mBodyWeight - mMetabolism * mTimeSinceStart) * 10;
-        mHighScore = getDouble(tHistory, "mHighScore", 0);
-
-        if (mCurrentScore > mHighScore) {
-            mHighScore = mCurrentScore;
-
-            SharedPreferences.Editor editor = tHistory.edit();
-            putDouble(editor, "mHighScore", mHighScore);
-            editor.apply();
-        }
-
-        mCountScore = (mHighScore - mCurrentScore) / 10 / 0.806 / 1.2 * mBodyWater * mBodyWeight * 0.798;
-
-        return mCurrentScore;
-    }
-
     private void updateLabels() {
+        getPrefs();
+
         mHighScoreView.setText("" + pf.format(mHighScore) + " ‰");
         mCurrentScoreView.setText("" + pf.format(mCurrentScore) + " ‰");
-        mCountScoreView.setText("" + df.format(Math.ceil(mCountScore)) + " x ");
+        mCountScoreView.setText("" + sf.format(Math.ceil(mCountScore)) + " x ");
     }
 
     private double getHours() {
@@ -111,6 +86,17 @@ public class GraphFragment extends Fragment {
             DAYS++;
             return false;
         }
+    }
+
+    private void getPrefs() {
+        if (null == cPrefs)
+            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
+        if (null == tPrefs)
+            tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
+
+        mHighScore = getDouble(tPrefs, "mHighScore", 0);
+        mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
+        mCountScore = getDouble(cPrefs, "mCountScore", 0);
     }
 
     protected void resetGraph() {

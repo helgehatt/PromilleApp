@@ -24,22 +24,31 @@ public class MainFragment extends Fragment {
 
     private GridView mGrid;
     private GridAdapter mAdapter;
-    private HistoryFragment mHistory;
-    private GraphFragment mGraph;
-    private TextView mPermilleView, mSoberTimerView;
+    private TextView mPermilleView, mSoberInView;
+    private long mDrinkingStart;
 
-    private static final DecimalFormat df = new DecimalFormat("##");
-    private static final DecimalFormat pf = new DecimalFormat("0.00");
+    private static double cVolume, tVolume;
+    private static int cQuantity, tQuantity;
+    private static double cAlcohol, tAlcohol;
+    private static double cCalories, tCalories;
+
+    private SharedPreferences cPrefs, tPrefs, sPrefs;
+
+    private static final DecimalFormat df = new DecimalFormat("00");
+    private static final DecimalFormat pf = new DecimalFormat("#0.00");
+    private static final DecimalFormat sf = new DecimalFormat("##");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mHistory = getHistory();
-        mGraph = getGraph();
+        mDrinkingStart = System.currentTimeMillis();
 
-        mPermilleView = (TextView) view.findViewById(R.id.textNumber);
-        mSoberTimerView = (TextView) view.findViewById(R.id.textTimer);
+        mPermilleView = (TextView) view.findViewById(R.id.permille);
+        mSoberInView = (TextView) view.findViewById(R.id.soberIn);
+
+        sPrefs = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        getPrefs();
 
         updateLabels();
 
@@ -53,7 +62,8 @@ public class MainFragment extends Fragment {
                     Log.i(TAG, "Increment drink");
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
-                    mHistory.addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories(), getActivity());
+                    addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
+                    calculatePermille();
                     updateLabels();
                 }
             }
@@ -70,7 +80,8 @@ public class MainFragment extends Fragment {
                         Log.i(TAG, "Decrement drink");
                         mAdapter.notifyDataSetChanged();
                         mGrid.invalidateViews();
-                        mHistory.remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories(), getActivity());
+                        remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
+                        calculatePermille();
                         updateLabels();
                     }
                 }
@@ -104,29 +115,126 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    private void calculatePermille() {
+
+        String mGender = sPrefs.getString("gender", "Male");
+        double mBloodWater = 0.806; // Constant for body water in the blood.
+        double mNumStdDrinks = getDouble(cPrefs, "cAlcohol", 0) * 7.89 / 10; // Number of drinks containing 10 grams of ethanol.
+        double mConversion = 1.2; // Conversion standard set by The Swedish National Institute of Public Health.
+        double mBodyWater = mGender.equals("Male") ? 0.58 : 0.49; // Body water constant.
+        int mBodyWeight = sPrefs.getInt("weight", 0); // Body weight.
+        double mMetabolism = mGender.equals("Male") ? 0.015 : 0.017; // Metabolism constant.
+        long mTimeSinceStart = (System.currentTimeMillis() - mDrinkingStart) / 3600000; // Time since drinking start in hours.
+
+        double mCurrentScore = (mBloodWater * mNumStdDrinks * mConversion / mBodyWater / mBodyWeight - mMetabolism * mTimeSinceStart) * 10;
+        double mHighScore = getDouble(tPrefs, "mHighScore", 0);
+
+        if (mCurrentScore > mHighScore) {
+            mHighScore = mCurrentScore;
+
+            SharedPreferences.Editor editor = tPrefs.edit();
+            putDouble(editor, "mHighScore", mHighScore);
+            editor.apply();
+        }
+
+        double mCountScore = (mHighScore - mCurrentScore) / 10 / 0.806 / 1.2 * mBodyWater * mBodyWeight;
+
+        SharedPreferences.Editor editor = cPrefs.edit();
+        putDouble(editor, "mCurrentScore", mCurrentScore);
+        putDouble(editor, "mCountScore", mCountScore);
+        editor.apply();
+    }
+
+    private void addDrink(double volume, double alcohol, double calories) {
+
+        cVolume += volume / 100;
+        tVolume += volume / 100;
+
+        cQuantity ++;
+        tQuantity ++;
+
+        cAlcohol += volume * alcohol / 100;
+        tAlcohol += volume * alcohol / 100;
+
+        cCalories += calories;
+        tCalories += calories;
+
+        setPrefs();
+    }
+
+    private void remDrink(double volume, double alcohol, double calories) {
+
+        cVolume -= volume / 100;
+        tVolume -= volume / 100;
+
+        cQuantity --;
+        tQuantity --;
+
+        cAlcohol -= volume * alcohol / 100;
+        tAlcohol -= volume * alcohol / 100;
+
+        cCalories -= calories;
+        tCalories -= calories;
+
+        setPrefs();
+    }
+
     private void updateLabels() {
-        double mPermille = mGraph.setScores(getActivity());
-        mPermilleView.setText("  " + pf.format(mPermille) + " ‰");
 
-        SharedPreferences settings = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        double mMetabolism = settings.getString("gender", "Male").equals("Male") ? 0.15 : 0.17;
-        double num = mPermille / mMetabolism;
-        mSoberTimerView.setText("Sober in " + df.format(num % 100 - num % 1) + " h " + df.format(num % 1 * 60) + " m");
+        double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
+        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
+
+        double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017) * 10;
+        double n = mCurrentScore / mMetabolism;
+        mSoberInView.setText("Sober in " + sf.format(n % 100 - n % 1) + " h " + sf.format(n % 1 * 60) + " m");
     }
 
-    private HistoryFragment getHistory() {
-        String tagName = "android:switcher:" + R.id.pager + ":" + 0;
-        HistoryFragment history = (HistoryFragment) getActivity().getSupportFragmentManager().findFragmentByTag(tagName);
-        if (null == history)
-            return new HistoryFragment();
-        return history;
+    private void getPrefs() {
+        if (null == cPrefs)
+            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
+
+        if (null == tPrefs)
+            tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
+
+        cVolume = getDouble(cPrefs, "cVolume", 0);
+        tVolume = getDouble(tPrefs, "tVolume", 0);
+
+        cQuantity = cPrefs.getInt("cQuantity", 0);
+        tQuantity = tPrefs.getInt("tQuantity", 0);
+
+        cAlcohol = getDouble(cPrefs, "cAlcohol", 0);
+        tAlcohol = getDouble(tPrefs, "tAlcohol", 0);
+
+        cCalories = getDouble(cPrefs, "cCalories", 0);
+        tCalories = getDouble(tPrefs, "tCalories", 0);
     }
 
-    private GraphFragment getGraph() {
-        String tagName = "android:switcher:" + R.id.pager + ":" + 1;
-        GraphFragment graph = (GraphFragment) getActivity().getSupportFragmentManager().findFragmentByTag(tagName);
-        if (null == graph)
-            return new GraphFragment();
-        return graph;
+    private void setPrefs() {
+
+        SharedPreferences.Editor cEditor = cPrefs.edit();
+        SharedPreferences.Editor tEditor = tPrefs.edit();
+
+        putDouble(cEditor, "cVolume", cVolume);
+        putDouble(tEditor, "tVolume", tVolume);
+
+        cEditor.putInt("cQuantity", cQuantity);
+        tEditor.putInt("tQuantity", tQuantity);
+
+        putDouble(cEditor, "cAlcohol", cAlcohol);
+        putDouble(tEditor, "tAlcohol", tAlcohol);
+
+        putDouble(cEditor, "cCalories", cCalories);
+        putDouble(tEditor,"tCalories", tCalories);
+
+        cEditor.apply();
+        tEditor.apply();
+    }
+
+    private double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
+        return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
+    }
+
+    private SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
+        return edit.putLong(key, Double.doubleToRawLongBits(value));
     }
 }

@@ -32,47 +32,9 @@ public class HistoryFragment extends Fragment {
 
         getViews(view);
 
-        getPrefs(getActivity());
-
         updateLabels();
 
         return view;
-    }
-
-    public void addDrink(double volume, double alcohol, double calories, Context context) {
-        getPrefs(context);
-
-        cVolume += volume / 100;
-        tVolume += volume / 100;
-
-        cQuantity ++;
-        tQuantity ++;
-
-        cAlcohol += volume * alcohol / 10;
-        tAlcohol += volume * alcohol / 10;
-
-        cCalories += calories;
-        tCalories += calories;
-
-        setPrefs();
-    }
-
-    public void remDrink(double volume, double alcohol, double calories, Context context) {
-        getPrefs(context);
-
-        cVolume -= volume / 100;
-        tVolume -= volume / 100;
-
-        cQuantity --;
-        tQuantity --;
-
-        cAlcohol -= volume * alcohol / 10;
-        tAlcohol -= volume * alcohol / 10;
-
-        cCalories -= calories;
-        tCalories -= calories;
-
-        setPrefs();
     }
 
     public void getViews(View view) {
@@ -90,12 +52,12 @@ public class HistoryFragment extends Fragment {
         tCaloriesView = (TextView) view.findViewById(R.id.tCalories);
     }
 
-    public void getPrefs(Context context) {
+    public void getPrefs() {
         if (null == cPrefs)
-            cPrefs = context.getSharedPreferences("current", Context.MODE_PRIVATE);
+            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
 
         if (null == tPrefs)
-            tPrefs = context.getSharedPreferences("total", Context.MODE_PRIVATE);
+            tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
 
         cVolume = getDouble(cPrefs, "cVolume", 0);
         tVolume = getDouble(tPrefs, "tVolume", 0);
@@ -108,27 +70,6 @@ public class HistoryFragment extends Fragment {
 
         cCalories = getDouble(cPrefs, "cCalories", 0);
         tCalories = getDouble(tPrefs, "tCalories", 0);
-    }
-
-    public void setPrefs() {
-
-        SharedPreferences.Editor cEditor = cPrefs.edit();
-        SharedPreferences.Editor tEditor = tPrefs.edit();
-
-        putDouble(cEditor, "cVolume", cVolume);
-        putDouble(tEditor, "tVolume", tVolume);
-
-        cEditor.putInt("cQuantity", cQuantity);
-        tEditor.putInt("tQuantity", tQuantity);
-
-        putDouble(cEditor, "cAlcohol", cAlcohol);
-        putDouble(tEditor, "tAlcohol", tAlcohol);
-
-        putDouble(cEditor, "cCalories", cCalories);
-        putDouble(tEditor,"tCalories", tCalories);
-
-        cEditor.apply();
-        tEditor.apply();
     }
 
     public void resetAllPrefs(Context context) {
@@ -153,11 +94,8 @@ public class HistoryFragment extends Fragment {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
 
-    private SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
-        return edit.putLong(key, Double.doubleToRawLongBits(value));
-    }
-
     public void updateLabels() {
+        getPrefs();
 
         cVolumeView.setText(pf.format(cVolume));
         tVolumeView.setText(pf.format(tVolume));
