@@ -2,11 +2,15 @@ package com.example.helge.alculator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class AddDrinkActivity extends Activity {
@@ -67,7 +73,13 @@ public class AddDrinkActivity extends Activity {
                 data.putExtra(ALCOHOL, alcohol.getText().toString());
                 data.putExtra(VOLUME, volume.getText().toString());
                 data.putExtra(CALORIES, calories.getText().toString());
-                //TODO: Implement choosing and passing image.
+
+                Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                data.putExtra(IMAGE, byteArray);
+
                 setResult(RESULT_OK, data);
                 finish();
             }

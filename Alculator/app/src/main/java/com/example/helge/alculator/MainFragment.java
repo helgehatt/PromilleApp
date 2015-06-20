@@ -256,8 +256,8 @@ public class MainFragment extends Fragment {
                 calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
             }
 
-            //Temporary image till passing is complete.
-            Bitmap image = BitmapFactory.decodeResource(getActivity().getApplicationContext().getApplicationContext().getResources(), R.drawable.drink_black_box);
+            byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
+            Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
             Drink newDrink = new Drink(name, alcohol, volume, calories, image);
             mAdapter.add(newDrink);

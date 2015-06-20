@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class GridAdapter extends BaseAdapter {
-    private final String TAG = "Alculator";
+    public static final String TAG = "Alculator";
 
     private final Context mContext;
     private ArrayList<Drink> list = new ArrayList<>();
@@ -92,8 +92,6 @@ public class GridAdapter extends BaseAdapter {
 
             image.setImageBitmap(drink.getImage());
         }
-
-        Log.i(TAG, "Draw view in grid.");
 
         return view;
     }
