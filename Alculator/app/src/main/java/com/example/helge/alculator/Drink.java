@@ -1,8 +1,10 @@
 package com.example.helge.alculator;
 
+import android.graphics.drawable.Drawable;
+
 public class Drink {
     //Fields
-    private int imageID;
+    private Drawable image;
     private String name;
     private double alcoholPercent;
     private double volume;
@@ -11,15 +13,15 @@ public class Drink {
     private boolean selected = false;
 
     //Constructor
-    public Drink(String name, double percent, double volume, int imageID){
+    public Drink(String name, double percent, double volume, Drawable image){
         this.name = name;
         this.alcoholPercent = percent;
         this.volume = volume;
-        this.imageID = imageID;
+        this.image = image;
     }
 
-    public Drink(String name, double percent, double volume, double calories, int imageID){
-        this(name, percent, volume, imageID);
+    public Drink(String name, double percent, double volume, double calories, Drawable image){
+        this(name, percent, volume, image);
         this.calories = calories;
     }
 
@@ -64,12 +66,12 @@ public class Drink {
         this.quantity--;
     }
 
-    public int getImageID() {
-        return imageID;
+    public Drawable getImage() {
+        return image;
     }
 
-    public void setImageID(int imageID) {
-        this.imageID = imageID;
+    public void setImage(Drawable image) {
+        this.image = image;
     }
 
     public double getCalories() {

@@ -1,13 +1,11 @@
 package com.example.helge.alculator;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,8 +23,8 @@ public class GridAdapter extends BaseAdapter {
     public GridAdapter(Context context) {
         mContext = context;
         //Below items entered for testing
-        list.add(new Drink("A beer", 4.5, 33, R.drawable.drink_black_box));
-        list.add(new Drink("A shot", 30, 10, R.drawable.drink_black_box));
+        list.add(new Drink("A beer", 5.8, 50, mContext.getResources().getDrawable(R.drawable.drink_black_box)));
+        list.add(new Drink("A shot", 30, 10, mContext.getResources().getDrawable(R.drawable.drink_black_box)));
     }
 
     @Override
@@ -90,7 +88,7 @@ public class GridAdapter extends BaseAdapter {
             else
                 counter.setText("");
 
-            image.setImageResource(drink.getImageID());
+            image.setImageDrawable(drink.getImage());
         }
 
         Log.i(TAG, "Draw view in grid.");
@@ -99,13 +97,13 @@ public class GridAdapter extends BaseAdapter {
     }
 
     public boolean setSelected(int position) {
-        if (position == list.size()) return true;
+        if (position == list.size()) return false;
         if (0 <= position && position < list.size()){
             list.get(selectedItem).setSelected(false);
             list.get(position).setSelected(true);
             selectedItem = position;
         }
-        return false;
+        return true;
     }
 
     public Drink getSelectedItem() {
@@ -113,5 +111,9 @@ public class GridAdapter extends BaseAdapter {
             return list.get(selectedItem);
         }
         return null;
+    }
+
+    public void add(Drink newDrink){
+        list.add(newDrink);
     }
 }

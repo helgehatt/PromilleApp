@@ -1,9 +1,10 @@
 package com.example.helge.alculator;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.Tag;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -95,8 +96,9 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
-                if (mAdapter.setSelected(position))
-                    startActivity(new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class));
+                if (!mAdapter.setSelected(position)) {
+                    startActivityForResult(new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class), AddDrinkActivity.NEW_DRINK);
+                }
             }
         });
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -104,7 +106,7 @@ public class MainFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Long click: Position: " + position, Toast.LENGTH_LONG).show();
                 Drink drink = mAdapter.getSelectedItem();
-                Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), drink.getImageID())
+                Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), R.drawable.drink_black_box)
                         .show(getFragmentManager(), "Dialog");
                 return true;
             }
@@ -182,7 +184,7 @@ public class MainFragment extends Fragment {
     private void updateLabels() {
 
         double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
-        mPermilleView.setText("  " + pf.format(mCurrentScore) + " â€°");
+        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
 
         double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017) * 10;
         double n = mCurrentScore / mMetabolism;
@@ -236,5 +238,29 @@ public class MainFragment extends Fragment {
 
     private SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
         return edit.putLong(key, Double.doubleToRawLongBits(value));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (AddDrinkActivity.NEW_DRINK == requestCode && Activity.RESULT_OK == resultCode){
+            Bundle bundle = data.getExtras();
+            String name = bundle.getString(AddDrinkActivity.NAME);
+            double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
+            double volume = Double.parseDouble(bundle.getString(AddDrinkActivity.VOLUME));
+
+            String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
+            double calories = 0;
+            if (!caloriesString.isEmpty()){
+                calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
+            }
+
+            //Temporary image till passing is complete.
+            Drawable image = getActivity().getResources().getDrawable(R.drawable.drink_black_box);
+
+            Drink newDrink = new Drink(name, alcohol, volume, calories, image);
+            mAdapter.add(newDrink);
+            mAdapter.notifyDataSetChanged();
+            mGrid.invalidateViews();
+        }
     }
 }
