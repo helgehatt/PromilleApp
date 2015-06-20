@@ -254,12 +254,12 @@ public class MainFragment extends Fragment {
             Bundle bundle = data.getExtras();
             String name = bundle.getString(AddDrinkActivity.NAME);
             double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
-            double volume = Double.parseDouble(bundle.getString(AddDrinkActivity.VOLUME));
+            int volume = Integer.parseInt(bundle.getString(AddDrinkActivity.VOLUME));
 
             String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
-            double calories = 0;
+            int calories = 0;
             if (!caloriesString.isEmpty()) {
-                calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
+                calories = Integer.parseInt(bundle.getString(AddDrinkActivity.CALORIES));
             }
 
             //Uncompress image.

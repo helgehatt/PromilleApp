@@ -65,7 +65,7 @@ public class GridAdapter extends BaseAdapter {
         values.clear();
     }
 
-    public void addToDatabase(String name, double percentage, int volume, int imageID) {
+    public void addToDatabase(String name, double percentage, int volume, int calories, int imageID) {
         addToDatabase(new Drink(name, percentage, volume, 0, BitmapFactory.decodeResource(mContext.getResources(),imageID)));
     }
 
