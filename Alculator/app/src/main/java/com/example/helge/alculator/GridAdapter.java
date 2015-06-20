@@ -35,10 +35,10 @@ public class GridAdapter extends BaseAdapter {
         mDbHelper = new DrinksDbHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
 
-        clearDatabase(); // TODO skal fjernes, når vi er lidt længere
-        addToDatabase(new Drink("Beer", 4.5, 33, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_beer_icon)));
-        addToDatabase(new Drink("Light beer", 2.1, 33, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_beer_icon)));
-        addToDatabase(new Drink("Shot", 32, 4, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_shot_icon)));
+        /*clearDatabase(); // TODO skal fjernes, når vi er lidt længere
+        addToDatabase("Beer", 4.5, 33, R.drawable.drink_beer_icon);
+        addToDatabase("Light beer", 2.1, 33, R.drawable.drink_beer_icon);
+        addToDatabase("Shot", 32, 4, R.drawable.drink_shot_icon);*/
 
         Cursor cursor = readDrinks();
 
@@ -46,23 +46,28 @@ public class GridAdapter extends BaseAdapter {
         while (!cursor.isAfterLast()) {
             list.add(new Drink(cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_NAME)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE)),
-                    cursor.getInt(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_VOLUME)),
-                    cursor.getInt(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_CALORIES)),
-                    BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_beer_icon))); // TODO get image resource from database
+                    cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_VOLUME)),
+                    cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_CALORIES)),
+                    BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(),
+                            cursor.getInt(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_IMAGE))))); // TODO get image resource from database
             cursor.moveToNext();
         }
     }
 
-    public void addToDatabase(Drink drink) {
+    public void addToDatabase(String name, double percentage, double volume, double calories, int imageID) {
         ContentValues values = new ContentValues();
 
-        values.put(DrinksContract.DrinkEntry.COLUMN_NAME, drink.getName());
-        values.put(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE, drink.getAlcoholPercent());
-        values.put(DrinksContract.DrinkEntry.COLUMN_VOLUME, drink.getVolume());
-        values.put(DrinksContract.DrinkEntry.COLUMN_CALORIES, drink.getCalories());
-        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, ""); //TODO få gemt billeder til databasen
+        values.put(DrinksContract.DrinkEntry.COLUMN_NAME, name);
+        values.put(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE, percentage);
+        values.put(DrinksContract.DrinkEntry.COLUMN_VOLUME, volume);
+        values.put(DrinksContract.DrinkEntry.COLUMN_CALORIES, calories);
+        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, imageID);
         mDatabase.insert(DrinksContract.DrinkEntry.TABLE_NAME, null, values);
         values.clear();
+    }
+
+    public void addToDatabase(String name, double percentage, int volume, int imageID) {
+        addToDatabase(name, percentage, volume, 0, imageID);
     }
 
     public void add(Drink newDrink) {
