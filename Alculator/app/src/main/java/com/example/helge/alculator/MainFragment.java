@@ -256,6 +256,7 @@ public class MainFragment extends Fragment {
                 calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
             }
 
+            //Uncompress image.
             byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
             Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 

@@ -74,6 +74,7 @@ public class AddDrinkActivity extends Activity {
                 data.putExtra(VOLUME, volume.getText().toString());
                 data.putExtra(CALORIES, calories.getText().toString());
 
+                //Get current image from imageview, compress it and put it as extra.
                 Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -95,6 +96,12 @@ public class AddDrinkActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //TODO: Delete current image?
+            }
+        });
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: give image choices.
             }
         });
 
