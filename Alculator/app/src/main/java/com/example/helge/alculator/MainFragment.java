@@ -193,7 +193,7 @@ public class MainFragment extends Fragment {
     private void updateLabels() {
 
         double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
-        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰"); // TODO find encoding så promilletegnet kan ses eller tilføj det i xml hvis muligt
+        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
 
         double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017) * 10;
         double n = mCurrentScore / mMetabolism;

@@ -62,11 +62,16 @@ public class AddDrinkActivity extends Activity {
                 String alcoholString = percentageField.getText().toString();
                 String volumeString = volumeField.getText().toString();
                 String caloriesString = caloriesField.getText().toString();
+
+                if (nameString.isEmpty() || alcoholString.isEmpty() || volumeString.isEmpty()){
+                    Toast.makeText(getApplicationContext(), MISSING_FIELDS, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 
-                data.putExtra(NAME, nameField.getText().toString());
-                data.putExtra(ALCOHOL, percentageField.getText().toString());
-                data.putExtra(VOLUME, volumeField.getText().toString());
-                data.putExtra(CALORIES, caloriesField.getText().toString());
+                data.putExtra(NAME, nameString);
+                data.putExtra(ALCOHOL, alcoholString);
+                data.putExtra(VOLUME, volumeString);
+                data.putExtra(CALORIES, caloriesString);
 
                 //Get current image from imageview, compress it and put it as extra.
                 Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
