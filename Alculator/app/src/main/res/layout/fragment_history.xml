@@ -57,7 +57,7 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
-            android:text="l"
+            android:text="@string/history_liters"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
@@ -121,7 +121,7 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
-            android:text="cl"
+            android:text="@string/history_centiliters"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>
@@ -153,7 +153,7 @@
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView
-            android:text="kcal"
+            android:text="@string/history_kcal"
             android:textSize="25dp"
             android:gravity="center"
             android:layout_weight="1"/>

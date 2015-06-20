@@ -17,13 +17,13 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/metric"
+            android:text="@string/settings_metric"
             android:id="@+id/radioButton_metric" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/imperial"
+            android:text="@string/settings_imperial"
             android:id="@+id/radioButton_imperial" />
 
     </RadioGroup>
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="@string/gender"
+            android:text="@string/settings_gender"
             android:id="@+id/textView_gender" />
 
         <RadioGroup
@@ -52,7 +52,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/male"
+                android:text="@string/settings_male"
                 android:id="@+id/radioButton_male"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
@@ -61,7 +61,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/female"
+                android:text="@string/settings_female"
                 android:id="@+id/radioButton_female"
                 android:layout_alignBottom="@+id/textView_gender"
                 android:layout_alignParentRight="true"
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="@string/weight"
+            android:text="@string/settings_weight"
             android:id="@+id/textView_weight" />
 
         <EditText
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="@string/kg"
+            android:text="@string/settings_kg"
             android:id="@+id/textView_kg_lbs"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"

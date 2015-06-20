@@ -1,9 +1,10 @@
 package com.example.helge.alculator;
 
+import java.io.Serializable;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
-public class Drink {
+public class Drink implements Serializable {
     //Fields
     private Bitmap image;
     private String name;

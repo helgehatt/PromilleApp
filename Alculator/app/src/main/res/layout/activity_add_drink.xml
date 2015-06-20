@@ -24,11 +24,13 @@
             android:layout_width="200sp"
             android:layout_height="match_parent"
             android:hint="Enter drink name"
-            android:id="@+id/edittext_drink_name"
-            android:inputType="text"
+            android:id="@+id/editText_drink_name"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:inputType="text" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -42,18 +44,20 @@
             android:textSize="30sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:text="Alcohol content:"
-            android:id="@+id/alcohol_percent" />
+            android:text="@string/add_drink_alcohol_content"
+            android:id="@+id/textView5" />
 
         <EditText
             android:layout_width="60sp"
             android:layout_height="match_parent"
             android:text=""
-            android:id="@+id/edittext_alcohol_percent"
-            android:inputType="numberDecimal"
+            android:id="@+id/editText_drink_percentage"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/percent"
-            android:layout_toStartOf="@+id/percent" />
+            android:layout_toStartOf="@+id/percent"
+            android:maxLength="3"
+            android:maxLines="1"
+            android:inputType="number|numberDecimal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,17 +80,19 @@
             android:textSize="30sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:text="Volume:"
-            android:id="@+id/volume" />
+            android:id="@+id/volume"
+            android:text="@string/add_drink_volume" />
 
         <EditText
             android:layout_width="100sp"
             android:layout_height="match_parent"
             android:text=""
-            android:id="@+id/edittext_volume"
-            android:inputType="number"
+            android:id="@+id/editText_drink_volume"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/cl" />
+            android:layout_toLeftOf="@+id/cl"
+            android:maxLength="3"
+            android:maxLines="1"
+            android:inputType="number" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -109,17 +115,18 @@
             android:textSize="30sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:text="Kcal (optional):"
+            android:text="@string/add_drink_kcal_optional"
             android:id="@+id/calories" />
 
         <EditText
             android:layout_width="100sp"
             android:layout_height="match_parent"
-            android:text=""
-            android:id="@+id/edittext_calories"
-            android:inputType="number"
+            android:id="@+id/editText_drink_calories"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/kcal" />
+            android:layout_toLeftOf="@+id/kcal"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="3" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -127,7 +134,7 @@
             android:textSize="30sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:text="kcal"
+            android:text="@string/history_kcal"
             android:id="@+id/kcal" />
 
     </RelativeLayout>

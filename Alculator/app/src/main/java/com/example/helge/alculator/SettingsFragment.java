@@ -31,12 +31,12 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
 
         RadioGroup unit = (RadioGroup) view.findViewById(R.id.radioGroup_unit);
         unit.setOnCheckedChangeListener(this);
-        String metric = getResources().getString(R.string.metric);
+        String metric = getResources().getString(R.string.settings_metric);
         unit.check(settings.getString("unit", metric).equals(metric) ? R.id.radioButton_metric : R.id.radioButton_imperial);
 
         RadioGroup gender = (RadioGroup) view.findViewById(R.id.radioGroup_gender);
         gender.setOnCheckedChangeListener(this);
-        String male = getResources().getString(R.string.male);
+        String male = getResources().getString(R.string.settings_male);
         gender.check(settings.getString("gender", male).equals(male) ? R.id.radioButton_male : R.id.radioButton_female);
 
         final EditText weightField = (EditText) view.findViewById(R.id.editText_weight);
@@ -62,19 +62,19 @@ public class SettingsFragment extends Fragment implements RadioGroup.OnCheckedCh
 
         switch (checkedId) {
             case R.id.radioButton_metric:
-                kgLbsView.setText(R.string.kg);
-                editor.putString("unit", getResources().getString(R.string.metric));
+                kgLbsView.setText(R.string.settings_kg);
+                editor.putString("unit", getResources().getString(R.string.settings_metric));
                 break;
             case R.id.radioButton_imperial:
-                kgLbsView.setText(R.string.lbs);
-                editor.putString("unit", getResources().getString(R.string.imperial));
+                kgLbsView.setText(R.string.settings_lbs);
+                editor.putString("unit", getResources().getString(R.string.settings_imperial));
                 break;
 
             case R.id.radioButton_male:
-                editor.putString("gender", getResources().getString(R.string.male));
+                editor.putString("gender", getResources().getString(R.string.settings_male));
                 break;
             case R.id.radioButton_female:
-                editor.putString("gender", getResources().getString(R.string.female));
+                editor.putString("gender", getResources().getString(R.string.settings_female));
                 break;
         }
 

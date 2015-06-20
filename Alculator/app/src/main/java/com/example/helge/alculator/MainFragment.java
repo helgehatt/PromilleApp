@@ -41,6 +41,9 @@ public class MainFragment extends Fragment {
     private static final DecimalFormat pf = new DecimalFormat("#0.00");
     private static final DecimalFormat sf = new DecimalFormat("##");
 
+    static final int ADD_DRINK_REQUEST = 0;
+    static final String ADD_DRINK_KEY = "drink";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -60,14 +63,15 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Drink drink = mAdapter.getSelectedItem();
-                if (drink != null){
+                if (drink != null) {
                     drink.incQuantity();
                     Log.i(TAG, "Increment drink");
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
                     addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
-                    calculatePermille();
+                    double mCurrentScore = calculatePermille();
                     updateLabels();
+                    makeImpairmentsToast(mCurrentScore);
                 }
             }
         });
@@ -99,7 +103,8 @@ public class MainFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
                 if (!mAdapter.setSelected(position)) {
-                    startActivityForResult(new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class), AddDrinkActivity.NEW_DRINK);
+                    Intent addDrinkIntent = new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class);
+                    startActivityForResult(addDrinkIntent, ADD_DRINK_REQUEST);
                 }
             }
         });
@@ -119,7 +124,7 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    private void calculatePermille() {
+    private double calculatePermille() {
 
         String mGender = sPrefs.getString("gender", "Male");
         double mBloodWater = 0.806; // Constant for body water in the blood.
@@ -147,6 +152,8 @@ public class MainFragment extends Fragment {
         putDouble(editor, "mCurrentScore", mCurrentScore);
         putDouble(editor, "mCountScore", mCountScore);
         editor.apply();
+
+        return mCurrentScore;
     }
 
     private void addDrink(double volume, double alcohol, double calories) {
@@ -186,7 +193,7 @@ public class MainFragment extends Fragment {
     private void updateLabels() {
 
         double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
-        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
+        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰"); // TODO find encoding så promilletegnet kan ses eller tilføj det i xml hvis muligt
 
         double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017) * 10;
         double n = mCurrentScore / mMetabolism;
@@ -244,26 +251,52 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (AddDrinkActivity.NEW_DRINK == requestCode && Activity.RESULT_OK == resultCode){
-            Bundle bundle = data.getExtras();
-            String name = bundle.getString(AddDrinkActivity.NAME);
-            double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
-            double volume = Double.parseDouble(bundle.getString(AddDrinkActivity.VOLUME));
+        if (ADD_DRINK_REQUEST == requestCode && Activity.RESULT_OK == resultCode){
+            try {
+                Bundle bundle = data.getExtras();
+                String name = bundle.getString(AddDrinkActivity.NAME);
+                double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
+                double volume = Double.parseDouble(bundle.getString(AddDrinkActivity.VOLUME));
 
-            String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
-            double calories = 0;
-            if (!caloriesString.isEmpty()){
-                calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
+                String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
+                double calories = 0;
+                if (!caloriesString.isEmpty()) {
+                    calories = Double.parseDouble(bundle.getString(AddDrinkActivity.CALORIES));
+                }
+
+                //Uncompress image.
+                byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
+                Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                Drink newDrink = new Drink(name, alcohol, volume, calories, image);
+                mAdapter.add(newDrink);
+                mAdapter.notifyDataSetChanged();
+                mGrid.invalidateViews();
+            } catch (Exception e) {
+                Toast.makeText(getActivity().getApplicationContext(), "Missing fields - no drink added", Toast.LENGTH_LONG).show();
             }
-
-            //Uncompress image.
-            byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
-            Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-            Drink newDrink = new Drink(name, alcohol, volume, calories, image);
-            mAdapter.add(newDrink);
-            mAdapter.notifyDataSetChanged();
-            mGrid.invalidateViews();
+        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == ADD_DRINK_REQUEST) {
+            Toast.makeText(getActivity().getApplicationContext(), "No drink added", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void makeImpairmentsToast(double mCurrentScore) {
+        String toastText;
+        if (mCurrentScore > 5) {
+            toastText = getResources().getString(R.string.permille_above_5);
+        } else if (mCurrentScore > 3) {
+            toastText = getResources().getString(R.string.permille_above_3);
+        } else if (mCurrentScore > 2) {
+            toastText = getResources().getString(R.string.permille_above_2);
+        } else if (mCurrentScore > 1) {
+            toastText = getResources().getString(R.string.permille_above_1);
+        } else if (mCurrentScore > 0.5) {
+            toastText = getResources().getString(R.string.permille_above_05);
+        } else {
+            toastText = getResources().getString(R.string.permille_below_05);
+        }
+        Toast.makeText(getActivity().getApplicationContext(), toastText, Toast.LENGTH_LONG).show();
+
+        //TODO create proper strings
     }
 }

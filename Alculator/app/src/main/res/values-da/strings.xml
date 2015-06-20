@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Alculator</string>
+
+    <string name="history_current">Nuværende</string>
+    <string name="history_total">Samlet</string>
+    <string name="history_volume">Volumen</string>
+    <string name="history_quantity">Antal</string>
+    <string name="history_alcohol">Alkohol</string>
+    <string name="history_calories">Kalorier</string>
+    <string name="history_kcal">kcal</string>
+    <string name="history_centiliters">cl</string>
+    <string name="history_liters">l</string>
+
+    <string name="graph_score_high">Højeste Score:</string>
+    <string name="graph_score_current">Nuværende Score:</string>
+    <string name="graph_score_count">Ny højeste score om:</string>
+
+    <string name="main_button_add">+</string>
+    <string name="main_button_rem">-</string>
+
+    <string name="settings_metric">Kilogram</string>
+    <string name="settings_imperial">Pund</string>
+    <string name="settings_gender">Køn:</string>
+    <string name="settings_male">Mand</string>
+    <string name="settings_female">Kvinde</string>
+    <string name="settings_weight">Vægt:</string>
+    <string name="settings_kg">kg</string>
+    <string name="settings_lbs">pund</string>
+
+    <string name="add_drink_kcal_optional">Kalorier (valgfrit):</string>
+    <string name="add_drink_volume">Volumen:</string>
+    <string name="add_drink_alcohol_content">Alkoholindhold:</string>
+    <string name="add_drink_name">Navn på drink:</string>
+    <string name="permille_above_5">Your blood alcohol content is now above 5</string>
+    <string name="permille_above_3">Your blood alcohol content is now above 3</string>
+    <string name="permille_above_2">Your blood alcohol content is now above 2</string>
+    <string name="permille_above_1">Your blood alcohol content is now above 1</string>
+    <string name="permille_above_05">Your blood alcohol content is now above 0.5</string>
+    <string name="permille_below_05">Your blood alcohol content is still below 0.5</string>
+
+</resources>

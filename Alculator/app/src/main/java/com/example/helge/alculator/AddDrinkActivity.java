@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
-
 public class AddDrinkActivity extends Activity {
 
     public static final int NEW_DRINK = 1;
@@ -33,22 +32,22 @@ public class AddDrinkActivity extends Activity {
 
     private static final String MISSING_FIELDS = "Required fields are missing.";
 
-    EditText name;
-    EditText alcohol;
-    EditText volume;
-    EditText calories;
-    ImageView image;
+    private EditText nameField;
+    private EditText percentageField;
+    private EditText volumeField;
+    private EditText caloriesField;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_add_drink);
-
-        name = (EditText) findViewById(R.id.edittext_drink_name);
-        alcohol = (EditText) findViewById(R.id.edittext_alcohol_percent);
-        volume = (EditText) findViewById(R.id.edittext_volume);
-        calories = (EditText) findViewById(R.id.edittext_calories);
+        
+        nameField = (EditText) findViewById(R.id.editText_drink_name);
+        percentageField = (EditText) findViewById(R.id.editText_drink_percentage);
+        volumeField = (EditText) findViewById(R.id.editText_drink_volume);
+        caloriesField = (EditText) findViewById(R.id.editText_drink_calories);
         image = (ImageView) findViewById(R.id.image);
 
         Button okButton = (Button) findViewById(R.id.button_ok);
@@ -59,20 +58,15 @@ public class AddDrinkActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent data = new Intent();
-                String nameString = name.getText().toString();
-                String alcoholString = alcohol.getText().toString();
-                String volumeString = volume.getText().toString();
-                String caloriesString = calories.getText().toString();
-
-                if (nameString.isEmpty() || alcoholString.isEmpty() || volumeString.isEmpty()){
-                    Toast.makeText(getApplicationContext(), MISSING_FIELDS, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                data.putExtra(NAME, name.getText().toString());
-                data.putExtra(ALCOHOL, alcohol.getText().toString());
-                data.putExtra(VOLUME, volume.getText().toString());
-                data.putExtra(CALORIES, calories.getText().toString());
+                String nameString = nameField.getText().toString();
+                String alcoholString = percentageField.getText().toString();
+                String volumeString = volumeField.getText().toString();
+                String caloriesString = caloriesField.getText().toString();
+                
+                data.putExtra(NAME, nameField.getText().toString());
+                data.putExtra(ALCOHOL, percentageField.getText().toString());
+                data.putExtra(VOLUME, volumeField.getText().toString());
+                data.putExtra(CALORIES, caloriesField.getText().toString());
 
                 //Get current image from imageview, compress it and put it as extra.
                 Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
@@ -85,6 +79,7 @@ public class AddDrinkActivity extends Activity {
                 finish();
             }
         });
+        
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +99,5 @@ public class AddDrinkActivity extends Activity {
                 //TODO: give image choices.
             }
         });
-
     }
 }
