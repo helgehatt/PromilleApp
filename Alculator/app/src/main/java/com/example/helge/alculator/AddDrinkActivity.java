@@ -67,7 +67,7 @@ public class AddDrinkActivity extends Activity {
                 data.putExtra(ALCOHOL, alcohol.getText().toString());
                 data.putExtra(VOLUME, volume.getText().toString());
                 data.putExtra(CALORIES, calories.getText().toString());
-                //TODO: Implement passing the image.
+                //TODO: Implement choosing and passing image.
                 setResult(RESULT_OK, data);
                 finish();
             }

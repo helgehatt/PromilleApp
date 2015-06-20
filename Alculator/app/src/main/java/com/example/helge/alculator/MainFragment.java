@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -255,7 +257,7 @@ public class MainFragment extends Fragment {
             }
 
             //Temporary image till passing is complete.
-            Drawable image = getActivity().getResources().getDrawable(R.drawable.drink_black_box);
+            Bitmap image = BitmapFactory.decodeResource(getActivity().getApplicationContext().getApplicationContext().getResources(), R.drawable.drink_black_box);
 
             Drink newDrink = new Drink(name, alcohol, volume, calories, image);
             mAdapter.add(newDrink);

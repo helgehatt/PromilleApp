@@ -1,6 +1,8 @@
 package com.example.helge.alculator;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,8 @@ public class GridAdapter extends BaseAdapter {
     public GridAdapter(Context context) {
         mContext = context;
         //Below items entered for testing
-        list.add(new Drink("A beer", 5.8, 50, mContext.getResources().getDrawable(R.drawable.drink_black_box)));
-        list.add(new Drink("A shot", 30, 10, mContext.getResources().getDrawable(R.drawable.drink_black_box)));
+        list.add(new Drink("A beer", 5.8, 50, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_beer_icon)));
+        list.add(new Drink("A shot", 30, 10, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_shot_icon)));
     }
 
     @Override
@@ -88,7 +90,7 @@ public class GridAdapter extends BaseAdapter {
             else
                 counter.setText("");
 
-            image.setImageDrawable(drink.getImage());
+            image.setImageBitmap(drink.getImage());
         }
 
         Log.i(TAG, "Draw view in grid.");
