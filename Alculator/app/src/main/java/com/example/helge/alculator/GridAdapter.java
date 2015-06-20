@@ -35,7 +35,7 @@ public class GridAdapter extends BaseAdapter {
         mDbHelper = new DrinksDbHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
 
-        clearDatabase(); // TODO skal fjernes, når vi er lidt længere
+        clearDatabase(); // TODO skal fjernes, nÃ¥r vi er lidt lÃ¦ngere
         addToDatabase(new Drink("Beer", 4.5, 33, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_beer_icon)));
         addToDatabase(new Drink("Light beer", 2.1, 33, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_beer_icon)));
         addToDatabase(new Drink("Shot", 32, 4, BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(), R.drawable.drink_shot_icon)));
@@ -60,7 +60,7 @@ public class GridAdapter extends BaseAdapter {
         values.put(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE, drink.getAlcoholPercent());
         values.put(DrinksContract.DrinkEntry.COLUMN_VOLUME, drink.getVolume());
         values.put(DrinksContract.DrinkEntry.COLUMN_CALORIES, drink.getCalories());
-        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, ""); //TODO få gemt billeder til databasen
+        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, ""); //TODO fÃ¥ gemt billeder til databasen
         mDatabase.insert(DrinksContract.DrinkEntry.TABLE_NAME, null, values);
         values.clear();
     }

@@ -18,6 +18,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Calendar;
 
 public class GraphFragment extends Fragment {
