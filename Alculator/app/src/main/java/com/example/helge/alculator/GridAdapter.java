@@ -172,6 +172,11 @@ public class GridAdapter extends BaseAdapter {
             else
                 counter.setText("");
 
+            if (drink.isSelected())
+                view.setBackgroundResource(R.drawable.btn_blue_matte);
+            else
+                view.setBackgroundResource(R.drawable.btn_black);
+
             image.setImageBitmap(drink.getImage());
         }
         

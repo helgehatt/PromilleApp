@@ -116,22 +116,22 @@ public class MainFragment extends Fragment {
         mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
                 if (!mAdapter.setSelected(position)) {
                     Intent addDrinkIntent = new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class);
                     startActivityForResult(addDrinkIntent, ADD_DRINK_REQUEST);
                 }
+                mGrid.invalidateViews();
             }
         });
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), "Long click: Position: " + position, Toast.LENGTH_LONG).show();
                 Drink drink = mAdapter.getItem(position);
                 if (drink != null){
-                    Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), R.drawable.drink_black_box)
+                    Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), drink.getImage())
                             .show(getFragmentManager(), "Dialog");
                 }
+                mGrid.invalidateViews();
                 return true;
             }
         });
