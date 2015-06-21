@@ -64,7 +64,7 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     drink.incQuantity();
                     Log.i(TAG, "Increment drink");
-                    mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
+                    //mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
 
