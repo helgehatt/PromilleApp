@@ -64,6 +64,7 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     drink.incQuantity();
                     Log.i(TAG, "Increment drink");
+                    mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
 
@@ -308,8 +309,8 @@ public class MainFragment extends Fragment {
             byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
             Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-            Drink newDrink = new Drink(name, alcohol, volume, calories, image);
-            mAdapter.addToDatabase(name, alcohol, volume, calories, 1); // TODO add image resource to device and save resource id to database
+            Drink newDrink = new Drink(name, alcohol, volume, calories, image, System.currentTimeMillis());
+            mAdapter.addToDatabase(name, alcohol, volume, calories, R.drawable.drink_beer_icon, System.currentTimeMillis()); // TODO add image resource to device and save resource id to database
             mAdapter.add(newDrink);
             mAdapter.notifyDataSetChanged();
             mGrid.invalidateViews();

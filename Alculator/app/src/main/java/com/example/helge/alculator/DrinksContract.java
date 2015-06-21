@@ -14,5 +14,6 @@ public final class DrinksContract {
         public static final String COLUMN_VOLUME = "volume";
         public static final String COLUMN_CALORIES = "calories";
         public static final String COLUMN_IMAGE = "image";
+        public static final String COLUMN_LAST_USE = "lastUse";
     }
 }
