@@ -18,7 +18,8 @@ public class DrinksDbHelper extends SQLiteOpenHelper {
                 DrinksContract.DrinkEntry.COLUMN_PERCENTAGE + TEXT_TYPE + COMMA_SEP +
                 DrinksContract.DrinkEntry.COLUMN_VOLUME + TEXT_TYPE + COMMA_SEP +
                 DrinksContract.DrinkEntry.COLUMN_CALORIES + TEXT_TYPE + COMMA_SEP +
-                DrinksContract.DrinkEntry.COLUMN_IMAGE + TEXT_TYPE + ")";
+                DrinksContract.DrinkEntry.COLUMN_IMAGE + TEXT_TYPE + COMMA_SEP +
+                DrinksContract.DrinkEntry.COLUMN_LAST_USE + TEXT_TYPE + ")";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DrinksContract.DrinkEntry.TABLE_NAME;

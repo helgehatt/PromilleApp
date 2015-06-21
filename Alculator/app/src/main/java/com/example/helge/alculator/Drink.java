@@ -13,17 +13,18 @@ public class Drink implements Serializable {
     private double calories;
     private int quantity = 0;
     private boolean selected = false;
+    private long lastUse;
 
     //Constructor
-    public Drink(String name, double percent, double volume, Bitmap image){
+    public Drink(String name, double percent, double volume, Bitmap image, long lastUse){
         this.name = name;
         this.alcoholPercent = percent;
         this.volume = volume;
         this.image = image;
     }
 
-    public Drink(String name, double percent, double volume, double calories, Bitmap image){
-        this(name, percent, volume, image);
+    public Drink(String name, double percent, double volume, double calories, Bitmap image, long lastUse){
+        this(name, percent, volume, image, lastUse);
         this.calories = calories;
     }
 
@@ -90,5 +91,13 @@ public class Drink implements Serializable {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public long getLastUse() {
+        return lastUse;
+    }
+
+    public void setLastUse(long lastUse) {
+        this.lastUse = lastUse;
     }
 }

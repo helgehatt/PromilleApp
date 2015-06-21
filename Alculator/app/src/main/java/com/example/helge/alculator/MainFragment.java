@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -65,6 +64,7 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     drink.incQuantity();
                     Log.i(TAG, "Increment drink");
+                    mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
                     addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
@@ -266,8 +266,8 @@ public class MainFragment extends Fragment {
             byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
             Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-            Drink newDrink = new Drink(name, alcohol, volume, calories, image);
-            mAdapter.addToDatabase(name, alcohol, volume, calories, 1); // TODO add image resource to device and save resource id to database
+            Drink newDrink = new Drink(name, alcohol, volume, calories, image, System.currentTimeMillis());
+            mAdapter.addToDatabase(name, alcohol, volume, calories, R.drawable.drink_beer_icon, System.currentTimeMillis()); // TODO add image resource to device and save resource id to database
             mAdapter.add(newDrink);
             mAdapter.notifyDataSetChanged();
             mGrid.invalidateViews();

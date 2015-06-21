@@ -38,5 +38,6 @@
     <string name="permille_above_1">Your blood alcohol content is now above 1</string>
     <string name="permille_above_05">Your blood alcohol content is now above 0.5</string>
     <string name="permille_below_05">Your blood alcohol content is still below 0.5</string>
+    <string name="settings_apply">Apply changes</string>
 
 </resources>

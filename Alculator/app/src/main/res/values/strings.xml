@@ -46,5 +46,6 @@
 
     <string name="achievement_probably_dead">PROBABLY DEAD</string>
     <string name="achievement_probably_dead_text">You should probably be dead by now</string>
+    <string name="settings_apply">Apply changes</string>
 
 </resources>
