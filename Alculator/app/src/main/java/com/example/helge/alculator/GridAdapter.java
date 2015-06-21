@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,8 +28,8 @@ public class GridAdapter extends BaseAdapter {
     public static final String TAG = "Alculator";
 
     private final Context mContext;
-    private ArrayList<Drink> list = new ArrayList<Drink>();
-    private int selectedItem;
+    private ArrayList<Drink> list = new ArrayList<>();
+    private Drink selectedItem;
     private SQLiteOpenHelper mDbHelper;
     private SQLiteDatabase mDatabase;
 
@@ -80,16 +81,16 @@ public class GridAdapter extends BaseAdapter {
 
         drink.setLastUse(lastUse);
 
-        Collections.sort(list, new Comparator<Drink>() {
-            @Override
-            public int compare(Drink lhs, Drink rhs) {
-                return lhs.getLastUse() < rhs.getLastUse() ? 1 : -1;
-            }
-        });
+        sort();
     }
 
     public void add(Drink newDrink) {
         list.add(newDrink);
+        sort();
+    }
+
+    protected void sort(){
+        Collections.sort(list);
     }
 
     private Cursor readDrinks() {
@@ -180,17 +181,14 @@ public class GridAdapter extends BaseAdapter {
     public boolean setSelected(int position) {
         if (position == list.size()) return false;
         if (0 <= position && position < list.size()){
-            list.get(selectedItem).setSelected(false);
-            list.get(position).setSelected(true);
-            selectedItem = position;
+            if (selectedItem != null) selectedItem.setSelected(false);
+            selectedItem = list.get(position);
+            selectedItem.setSelected(true);
         }
         return true;
     }
 
     public Drink getSelectedItem() {
-        if (0 <= selectedItem && selectedItem < list.size()){
-            return list.get(selectedItem);
-        }
-        return null;
+        return selectedItem;
     }
 }

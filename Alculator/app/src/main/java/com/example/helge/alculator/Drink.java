@@ -3,8 +3,9 @@ package com.example.helge.alculator;
 import java.io.Serializable;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 
-public class Drink implements Serializable {
+public class Drink implements Serializable, Comparable<Drink> {
     //Fields
     private Bitmap image;
     private String name;
@@ -21,6 +22,7 @@ public class Drink implements Serializable {
         this.alcoholPercent = percent;
         this.volume = volume;
         this.image = image;
+        this.lastUse = lastUse;
     }
 
     public Drink(String name, double percent, double volume, double calories, Bitmap image, long lastUse){
@@ -91,6 +93,11 @@ public class Drink implements Serializable {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    @Override
+    public int compareTo(@NonNull Drink another) {
+        return (int) (another.getLastUse() - this.getLastUse());
     }
 
     public long getLastUse() {

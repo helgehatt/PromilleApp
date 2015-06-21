@@ -63,6 +63,7 @@ public class MainFragment extends Fragment {
                 Drink drink = mAdapter.getSelectedItem();
                 if (drink != null) {
                     drink.incQuantity();
+                    mAdapter.sort();
                     Log.i(TAG, "Increment drink");
                     mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
                     mAdapter.notifyDataSetChanged();
@@ -90,6 +91,7 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     if (drink.getQuantity() > 0) {
                         drink.decQuantity();
+                        mAdapter.sort();
                         Log.i(TAG, "Decrement drink");
                         mAdapter.notifyDataSetChanged();
                         mGrid.invalidateViews();
@@ -125,9 +127,11 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Long click: Position: " + position, Toast.LENGTH_LONG).show();
-                Drink drink = mAdapter.getSelectedItem();
-                Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), R.drawable.drink_black_box)
-                        .show(getFragmentManager(), "Dialog");
+                Drink drink = mAdapter.getItem(position);
+                if (drink != null){
+                    Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), R.drawable.drink_black_box)
+                            .show(getFragmentManager(), "Dialog");
+                }
                 return true;
             }
         });
