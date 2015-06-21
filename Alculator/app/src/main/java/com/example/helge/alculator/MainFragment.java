@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainFragment extends Fragment {
     private final String TAG = "Alculator";
@@ -28,7 +30,7 @@ public class MainFragment extends Fragment {
     private GridView mGrid;
     private GridAdapter mAdapter;
     private TextView mPermilleView, mSoberInView;
-    private long mDrinkingStart;
+    private double mTimeSinceStart;
 
     private static double cVolume, tVolume;
     private static int cQuantity, tQuantity;
@@ -37,9 +39,10 @@ public class MainFragment extends Fragment {
 
     private SharedPreferences cPrefs, tPrefs, sPrefs;
 
-    private static final DecimalFormat df = new DecimalFormat("00");
+    final Handler mHandler = new Handler();
+
     private static final DecimalFormat pf = new DecimalFormat("#0.00");
-    private static final DecimalFormat sf = new DecimalFormat("##");
+    private static final DecimalFormat sf = new DecimalFormat("###");
 
     static final int ADD_DRINK_REQUEST = 0;
 
@@ -47,14 +50,10 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mDrinkingStart = System.currentTimeMillis();
-
         mPermilleView = (TextView) view.findViewById(R.id.permille);
         mSoberInView = (TextView) view.findViewById(R.id.soberIn);
 
-        sPrefs = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        getPrefs();
-
+        initPrefs();
         updateLabels();
 
         Button addButton = (Button) view.findViewById(R.id.button_add);
@@ -67,10 +66,17 @@ public class MainFragment extends Fragment {
                     Log.i(TAG, "Increment drink");
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
+
+                    if (!cPrefs.getBoolean("mStartedDrinking", false)) {
+                        resetCurrentPrefs();
+                        cPrefs.edit().putBoolean("mStartedDrinking", true).apply();
+                        mHandler.postDelayed(mRunnable, 1000 * 2);
+                    }
+
                     addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
-                    double mCurrentScore = calculatePermille();
+                    makeImpairmentsToast(calculateCurrentScore());
                     updateLabels();
-                    makeImpairmentsToast(mCurrentScore);
+                    checkHighScore();
                 }
             }
         });
@@ -87,7 +93,12 @@ public class MainFragment extends Fragment {
                         mAdapter.notifyDataSetChanged();
                         mGrid.invalidateViews();
                         remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
-                        calculatePermille();
+                        calculateCurrentScore();
+                        if (getDouble(cPrefs, "mCurrentScore", 0) < 0) {
+                            putDouble(cPrefs.edit(), "mCurrentScore", 0).apply();
+                            cPrefs.edit().putBoolean("mStartedDrinking", false).apply();
+                            mHandler.removeCallbacks(mRunnable);
+                        }
                         updateLabels();
                     }
                 }
@@ -123,34 +134,62 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    private double calculatePermille() {
+    final Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mTimeSinceStart += 0.066666666667;
+            calculateCurrentScore();
+            mHandler.postDelayed(this, 1000 * 2);
 
-        String mGender = sPrefs.getString("gender", "Male");
-        double mBloodWater = 0.806; // Constant for body water in the blood.
-        double mNumStdDrinks = getDouble(cPrefs, "cAlcohol", 0) * 7.89 / 10; // Number of drinks containing 10 grams of ethanol.
-        double mConversion = 1.2; // Conversion standard set by The Swedish National Institute of Public Health.
-        double mBodyWater = mGender.equals("Male") ? 0.58 : 0.49; // Body water constant.
-        int mBodyWeight = sPrefs.getInt("weight", 0); // Body weight.
-        double mMetabolism = mGender.equals("Male") ? 0.015 : 0.017; // Metabolism constant.
-        long mTimeSinceStart = (System.currentTimeMillis() - mDrinkingStart) / 3600000; // Time since drinking start in hours.
+            if (getDouble(cPrefs, "mCurrentScore", 0) < 0) {
+                putDouble(cPrefs.edit(), "mCurrentScore", 0).apply();
+                cPrefs.edit().putBoolean("mStartedDrinking", false).apply();
+                mHandler.removeCallbacks(mRunnable);
+            }
+            updateLabels();
+        }
+    };
 
-        double mCurrentScore = (mBloodWater * mNumStdDrinks * mConversion / mBodyWater / mBodyWeight - mMetabolism * mTimeSinceStart) * 10;
+    public void resetCurrentPrefs() {
+        if (null == cPrefs)
+            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
+
+        cPrefs.edit().clear().apply();
+
+        mTimeSinceStart = 0;
+
+        initPrefs();
+    }
+
+    private void checkHighScore() {
+
         double mHighScore = getDouble(tPrefs, "mHighScore", 0);
+        double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
 
         if (mCurrentScore > mHighScore) {
+
             mHighScore = mCurrentScore;
-
-            SharedPreferences.Editor editor = tPrefs.edit();
-            putDouble(editor, "mHighScore", mHighScore);
-            editor.apply();
+            putDouble(tPrefs.edit(), "mHighScore", mHighScore).apply();
         }
+    }
+    private double calculateCurrentScore() {
 
-        double mCountScore = (mHighScore - mCurrentScore) / 10 / 0.806 / 1.2 * mBodyWater * mBodyWeight;
+        // Get constants.
+        String mGender = sPrefs.getString("gender", "Male");
+        double mBodyWater = mGender.equals("Male") ? 0.58 : 0.49;
+        double mMetabolism = mGender.equals("Male") ? 0.015 : 0.017;
+        double mBodyWeight = sPrefs.getInt("weight", 70);
+        double mDrinks = getDouble(cPrefs, "cAlcohol", 0) * 7.89 / 10;
 
+        // Calculate CurrentScore.
+        double mCurrentScore = (0.806 * mDrinks * 1.2 / mBodyWater / mBodyWeight - mMetabolism * mTimeSinceStart) * 10;
+
+        // Set CurrentScore.
         SharedPreferences.Editor editor = cPrefs.edit();
         putDouble(editor, "mCurrentScore", mCurrentScore);
-        putDouble(editor, "mCountScore", mCountScore);
         editor.apply();
+
+        System.out.println(mCurrentScore);
 
         return mCurrentScore;
     }
@@ -194,17 +233,20 @@ public class MainFragment extends Fragment {
         double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
         mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
 
-        double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017) * 10;
-        double n = mCurrentScore / mMetabolism;
+        double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017);
+        double n = mCurrentScore / mMetabolism / 10;
         mSoberInView.setText("Sober in " + sf.format(n % 100 - n % 1) + " h " + sf.format(n % 1 * 60) + " m");
     }
 
-    private void getPrefs() {
+    private void initPrefs() {
         if (null == cPrefs)
             cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
 
         if (null == tPrefs)
             tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
+
+        if (null == sPrefs)
+            sPrefs = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
 
         cVolume = getDouble(cPrefs, "cVolume", 0);
         tVolume = getDouble(tPrefs, "tVolume", 0);

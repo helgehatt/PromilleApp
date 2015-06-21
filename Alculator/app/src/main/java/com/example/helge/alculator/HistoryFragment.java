@@ -13,11 +13,6 @@ import java.text.DecimalFormat;
 
 public class HistoryFragment extends Fragment {
 
-    private static double cVolume, tVolume;
-    private static int cQuantity, tQuantity;
-    private static double cAlcohol, tAlcohol;
-    private static double cCalories, tCalories;
-
     private TextView cVolumeView, cQuantityView, cAlcoholView, cCaloriesView;
     private TextView tVolumeView, tQuantityView, tAlcoholView, tCaloriesView;
 
@@ -31,8 +26,6 @@ public class HistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
         getViews(view);
-
-        updateLabels();
 
         return view;
     }
@@ -52,61 +45,38 @@ public class HistoryFragment extends Fragment {
         tCaloriesView = (TextView) view.findViewById(R.id.tCalories);
     }
 
-    public void getPrefs() {
+    public void updateLabels() {
         if (null == cPrefs)
             cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
 
         if (null == tPrefs)
             tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
 
-        cVolume = getDouble(cPrefs, "cVolume", 0);
-        tVolume = getDouble(tPrefs, "tVolume", 0);
+        cVolumeView.setText(pf.format(getDouble(cPrefs, "cVolume", 0)));
+        tVolumeView.setText(pf.format(getDouble(tPrefs, "tVolume", 0)));
 
-        cQuantity = cPrefs.getInt("cQuantity", 0);
-        tQuantity = tPrefs.getInt("tQuantity", 0);
+        cQuantityView.setText("" + cPrefs.getInt("cQuantity", 0));
+        tQuantityView.setText("" + tPrefs.getInt("tQuantity", 0));
 
-        cAlcohol = getDouble(cPrefs, "cAlcohol", 0);
-        tAlcohol = getDouble(tPrefs, "tAlcohol", 0);
+        cAlcoholView.setText(df.format(getDouble(cPrefs, "cAlcohol", 0)));
+        tAlcoholView.setText(df.format(getDouble(tPrefs, "tAlcohol", 0)));
 
-        cCalories = getDouble(cPrefs, "cCalories", 0);
-        tCalories = getDouble(tPrefs, "tCalories", 0);
-    }
-
-    public void resetAllPrefs(Context context) {
-        if (null == cPrefs)
-            cPrefs = context.getSharedPreferences("current", Context.MODE_PRIVATE);
-
-        if (null == tPrefs)
-            tPrefs = context.getSharedPreferences("total", Context.MODE_PRIVATE);
-
-        cPrefs.edit().clear().apply();
-        tPrefs.edit().clear().apply();
-    }
-
-    public void resetCurrentPrefs(Context context) {
-        if (null == cPrefs)
-            cPrefs = context.getSharedPreferences("current", Context.MODE_PRIVATE);
-
-        cPrefs.edit().clear().apply();
+        cCaloriesView.setText(df.format(getDouble(cPrefs, "cCalories", 0)));
+        tCaloriesView.setText(df.format(getDouble(tPrefs, "tCalories", 0)));
     }
 
     double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
 
-    public void updateLabels() {
-        getPrefs();
+    public void resetAllPrefs() {
+        if (null == cPrefs)
+            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
 
-        cVolumeView.setText(pf.format(cVolume));
-        tVolumeView.setText(pf.format(tVolume));
+        if (null == tPrefs)
+            tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
 
-        cQuantityView.setText("" + cQuantity);
-        tQuantityView.setText("" + tQuantity);
-
-        cAlcoholView.setText(df.format(cAlcohol));
-        tAlcoholView.setText(df.format(tAlcohol));
-
-        cCaloriesView.setText(df.format(cCalories));
-        tCaloriesView.setText(df.format(tCalories));
+        cPrefs.edit().clear().apply();
+        tPrefs.edit().clear().apply();
     }
 }

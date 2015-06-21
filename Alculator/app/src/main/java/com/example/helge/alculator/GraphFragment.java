@@ -15,15 +15,12 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Calendar;
 
 public class GraphFragment extends Fragment {
 
-    private double mHighScore, mCurrentScore, mCountScore;
+    private double mHighScore, mCurrentScore, mCountScore, mBodyWater, mBodyWeight;
     private TextView mHighScoreView, mCurrentScoreView, mCountScoreView;
     private GraphView mGraph;
     private Viewport mViewport;
@@ -33,7 +30,7 @@ public class GraphFragment extends Fragment {
     private static final DecimalFormat sf = new DecimalFormat("##");
     private static int DAYS = 0;
 
-    private SharedPreferences cPrefs, tPrefs;
+    private SharedPreferences cPrefs, tPrefs, sPrefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,11 +60,10 @@ public class GraphFragment extends Fragment {
         mViewport.setScrollable(true);
         mViewport.setScalable(true);
 
-        updateLabels();
         return view;
     }
 
-    private void updateLabels() {
+    public void updateLabels() {
         getPrefs();
 
         mHighScoreView.setText("" + pf.format(mHighScore) + " ‰");
@@ -94,10 +90,15 @@ public class GraphFragment extends Fragment {
             cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
         if (null == tPrefs)
             tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
+        if (null == sPrefs)
+            sPrefs = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        mBodyWater = sPrefs.getString("gender", "Male").equals("Male") ? 0.58 : 0.49;
+        mBodyWeight = sPrefs.getInt("weight", 70);
 
         mHighScore = getDouble(tPrefs, "mHighScore", 0);
         mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
-        mCountScore = getDouble(cPrefs, "mCountScore", 0);
+        mCountScore = (mHighScore - mCurrentScore) / 0.806 / 1.2 * mBodyWater * mBodyWeight / 7.89 / 1.5;
     }
 
     protected void resetGraph() {

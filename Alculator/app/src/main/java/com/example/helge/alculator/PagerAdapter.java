@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
@@ -39,13 +40,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new HistoryFragment();
+                return Fragment.instantiate(mContext, HistoryFragment.class.getName());
             case 1:
-                return new GraphFragment();
+                return Fragment.instantiate(mContext, GraphFragment.class.getName());
             case 2:
-                return new MainFragment();
+                return Fragment.instantiate(mContext, MainFragment.class.getName());
             case 3:
-                return new SettingsFragment();
+                return Fragment.instantiate(mContext, SettingsFragment.class.getName());
         }
         return null;
     }
