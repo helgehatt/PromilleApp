@@ -64,7 +64,7 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     drink.incQuantity();
                     Log.i(TAG, "Increment drink");
-                    //mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
+                    mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
 
@@ -76,8 +76,8 @@ public class MainFragment extends Fragment {
 
                     addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
                     makeImpairmentsToast(calculateCurrentScore());
-                    updateLabels();
                     checkHighScore();
+                    updateLabels();
                 }
             }
         });
@@ -95,11 +95,13 @@ public class MainFragment extends Fragment {
                         mGrid.invalidateViews();
                         remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
                         calculateCurrentScore();
+
                         if (getDouble(cPrefs, "mCurrentScore", 0) < 0) {
                             putDouble(cPrefs.edit(), "mCurrentScore", 0).apply();
                             cPrefs.edit().putBoolean("mStartedDrinking", false).apply();
                             mHandler.removeCallbacks(mRunnable);
                         }
+
                         updateLabels();
                     }
                 }
@@ -139,6 +141,7 @@ public class MainFragment extends Fragment {
         @Override
         public void run() {
             mTimeSinceStart += 0.066666666667;
+            putDouble(cPrefs.edit(),"mTimeSinceStart", mTimeSinceStart).apply();
             calculateCurrentScore();
             mHandler.postDelayed(this, 1000 * 2);
 
@@ -150,6 +153,16 @@ public class MainFragment extends Fragment {
             updateLabels();
         }
     };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTimeSinceStart = getDouble(cPrefs, "mTimeSinceStart", 100);
+        if (cPrefs.getBoolean("mStartedDrinking", false)) {
+            mHandler.removeCallbacks(mRunnable);
+            mHandler.postDelayed(mRunnable, 1000 * 2);
+        }
+    }
 
     public void resetCurrentPrefs() {
         if (null == cPrefs)
