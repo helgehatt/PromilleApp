@@ -78,6 +78,7 @@ public class GraphFragment extends Fragment {
 
         mViewport.setScrollable(true);
         mViewport.setScalable(true);
+        mViewport.setXAxisBoundsManual(true);
 
         updateLabels();
 
@@ -103,6 +104,7 @@ public class GraphFragment extends Fragment {
         DataPoint mDataPoint = new DataPoint(mHours, mCurrentScore);
         try {
             mSeries.appendData(mDataPoint, true, 200);
+            mViewport.setMaxX(mHours + 0.25);
             mDataPoints.add(mDataPoint);
             return true;
         } catch (IllegalArgumentException e) {

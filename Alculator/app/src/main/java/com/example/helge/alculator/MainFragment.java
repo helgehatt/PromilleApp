@@ -22,8 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainFragment extends Fragment {
     private final String TAG = "Alculator";
@@ -48,7 +46,6 @@ public class MainFragment extends Fragment {
     private static final DecimalFormat sf = new DecimalFormat("###");
 
     static final int NEW_DRINK_REQUEST = 1;
-    static final int ADD_DRINK_REQUEST = 0;
     static final long ONE_MINUTE = 1000 * 60;
 
     @Override
@@ -202,6 +199,7 @@ public class MainFragment extends Fragment {
             putDouble(tPrefs.edit(), "mHighScore", mHighScore).apply();
         }
     }
+
     private double calculateCurrentScore() {
 
         // Get constants.
