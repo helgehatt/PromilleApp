@@ -21,6 +21,7 @@
         <fragment android:name=".HistoryFragment"/>
         <fragment android:name=".SettingsFragment"/>
         <activity android:name=".AddDrinkActivity"/>
+        <activity android:name=".TutorialActivity"/>
 
     </application>
 
