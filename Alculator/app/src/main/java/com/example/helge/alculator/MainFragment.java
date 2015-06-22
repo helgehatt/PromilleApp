@@ -137,8 +137,9 @@ public class MainFragment extends Fragment {
                 mAdapter.setSelected(position);
                 Drink drink = mAdapter.getItem(position);
                 if (drink != null){
-                    Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), drink.getImage())
-                            .show(getFragmentManager(), "Dialog");
+                    Dialog dialog = Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), drink.getImage());
+                    dialog.setTargetFragment(MainFragment.this, 0);
+                    dialog.show(getFragmentManager(), getResources().getString(R.string.dialog_title));
                 }
                 mGrid.invalidateViews();
                 return true;
@@ -373,5 +374,13 @@ public class MainFragment extends Fragment {
         if (null == graph)
             Fragment.instantiate(getActivity().getApplicationContext(), GraphFragment.class.getName());
         return graph;
+    }
+
+    // Deletes the selected item.
+    // This method should only be called if the desired item to removeSelectedItem is already selected.
+    public void onDialogDeletePressed() {
+        mAdapter.removeSelectedItem();
+        mAdapter.notifyDataSetChanged();
+        mGrid.invalidateViews();
     }
 }

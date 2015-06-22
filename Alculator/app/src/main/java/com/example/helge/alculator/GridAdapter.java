@@ -140,14 +140,14 @@ public class GridAdapter extends BaseAdapter {
         ImageView image;
         TextView name;
         TextView counter;
-        ImageView textbackground;
+        ImageView textBackground;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = (RelativeLayout) inflater.inflate(R.layout.grid_item, null, false);
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
             counter = (TextView) view.findViewById(R.id.counter);
-            textbackground = (ImageView) view.findViewById(R.id.gridtext_background);
+            textBackground = (ImageView) view.findViewById(R.id.gridtext_background);
 
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -158,18 +158,18 @@ public class GridAdapter extends BaseAdapter {
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
             counter = (TextView) view.findViewById(R.id.counter);
-            textbackground = (ImageView) view.findViewById(R.id.gridtext_background);
+            textBackground = (ImageView) view.findViewById(R.id.gridtext_background);
         }
         
         if (position == list.size()){
             name.setVisibility(View.GONE);
-            textbackground.setVisibility(View.GONE);
+            textBackground.setVisibility(View.GONE);
             counter.setVisibility(View.GONE);
             image.setImageResource(R.drawable.alculator_newicon);
         } else {
             Drink drink = list.get(position);
             name.setVisibility(View.VISIBLE);
-            textbackground.setVisibility(View.VISIBLE);
+            textBackground.setVisibility(View.VISIBLE);
             counter.setVisibility(View.VISIBLE);
             name.setText(drink.getName());
 
@@ -202,5 +202,12 @@ public class GridAdapter extends BaseAdapter {
 
     public Drink getSelectedItem() {
         return selectedItem;
+    }
+
+    public void removeSelectedItem() {
+        list.remove(selectedItem);
+        mDatabase.delete(DrinksContract.DrinkEntry.TABLE_NAME,
+                DrinksContract.DrinkEntry.COLUMN_NAME + "='" + selectedItem.getName() + "'",
+                null);
     }
 }

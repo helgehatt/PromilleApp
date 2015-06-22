@@ -54,7 +54,6 @@ public class AddDrinkActivity extends Activity {
 
         Button okButton = (Button) findViewById(R.id.button_ok);
         Button cancelButton = (Button) findViewById(R.id.button_cancel);
-        Button deleteButton = (Button) findViewById(R.id.button_delete);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +93,6 @@ public class AddDrinkActivity extends Activity {
             public void onClick(View v) {
                 setResult(RESULT_CANCELED);
                 finish();
-            }
-        });
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Delete current image?
             }
         });
         image.setOnClickListener(new View.OnClickListener() {

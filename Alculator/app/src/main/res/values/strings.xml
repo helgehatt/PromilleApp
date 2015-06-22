@@ -28,7 +28,7 @@
     <string name="settings_lbs">lbs</string>
     <string name="settings_reset">Reset</string>
 
-    <string name="add_drink_kcal_optional">Calories (optional):</string>
+    <string name="add_drink_kcal_optional">(Calories):</string>
     <string name="add_drink_volume">Volume:</string>
     <string name="add_drink_alcohol_content">Alcohol content:</string>
     <string name="add_drink_name">Drink name:</string>
@@ -40,22 +40,26 @@
     <string name="permille_above_05">Your blood alcohol content is now above 0.5</string>
     <string name="permille_below_05">Your blood alcohol content is still below 0.5</string>
 
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="dialog_title">Info</string>
+
     <!-- Achievement strings -->
-    <string name="achievement_unlocked">Achievement unlocked!</string>
+    <!--<string name="achievement_unlocked">Achievement unlocked!</string>
     <string name="achievement_heavy_drinker">HEAVY DRINKER</string>
     <string name="achievement_heavy_drinker_text">Achieve a blood alcohol content above 3</string>
 
     <string name="achievement_probably_dead">PROBABLY DEAD</string>
     <string name="achievement_probably_dead_text">You should probably be dead by now</string>
-    <string name="settings_apply">Apply changes</string>
+    <string name="settings_apply">Apply changes</string>-->
 
     <!-- Tutorial strings -->
-    <string name="tutorial_1">"Welcome to Alculator\n\Opening this application you will be introduced to this screen.\n\This tutorial will guide you through the simple use of this application."</string>
-    <string name="tutorial_2">"First thing you need to know is how to add drinks to your Alculator. To do this click this button.\n\When you have added a drink they will also show up in this window along with this button, you may click you drink to select it or you can hold your finger on them to see info on your drink."</string>
-    <string name="tutorial_3">"When you have a drink selected, click these buttons to add or subtract one of your selected drink to your Alculators per mille calculation."</string>
-    <string name="tutorial_4">"Use these tabs on the top of the screen to jump between menus that will tell you more about your personal per mille calculation or change you settings."</string>
-    <string name="tutorial_5">"When adding a drink you will encounter this screen for filling out information on your drink."</string>
-    <string name="tutorial_6">"You may click this empty frame to add a personal picture from your gallery to your drink.\n\There is nothing more to it, your Alculator is ready for use."</string>
+    <string name="tutorial_1">"Welcome to Alculator.\nUpon opening the application you will be introduced to this screen.\nThis tutorial will guide you through basic use of the application."</string>
+    <string name="tutorial_2">"The first thing you need to know is how to add drinks to your Alculator. To do this, click the highlighted button.\nWhen you add drinks, they will show up alongside this button in the same window. You may click a drink to select it or hold down a finger to see information about it."</string>
+    <string name="tutorial_3">"When you have a drink selected, click these buttons to add or subtract the selected drink from your Alculators current blood alcohol content calculation."</string>
+    <string name="tutorial_4">"Use the tabs on the top of the screen to jump between menus, which provide additional information about your Alculator history or enable you to change your settings."</string>
+    <string name="tutorial_5">"When adding a drink, you will encounter this screen for filling out information about your drink."</string>
+    <string name="tutorial_6">"You may click this empty frame to add a personal picture from your gallery to your drink.\nThere is nothing more to it, your Alculator is ready for use!"</string>
 
 
 </resources>
