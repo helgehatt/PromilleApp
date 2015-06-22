@@ -115,11 +115,11 @@ public class AddDrinkActivity extends Activity {
             Uri uri = data.getData();
             String filePath = getRealPathFromURI(uri);
             drinkData.putExtra(IMAGE_PATH, filePath);
-            // TODO change image in view
+            image.setImageBitmap(GridAdapter.getBitmapFromFilePath(filePath));
         }
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
+    private String getRealPathFromURI(Uri contentUri) {
         // can post image
         String [] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getApplicationContext().getContentResolver().query(contentUri,

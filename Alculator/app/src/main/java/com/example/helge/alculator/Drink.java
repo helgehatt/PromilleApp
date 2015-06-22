@@ -2,7 +2,6 @@ package com.example.helge.alculator;
 
 import java.io.Serializable;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 
 public class Drink implements Serializable, Comparable<Drink> {

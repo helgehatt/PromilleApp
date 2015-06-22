@@ -21,8 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainFragment extends Fragment {
     private final String TAG = "Alculator";
@@ -318,7 +316,6 @@ public class MainFragment extends Fragment {
             double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
             int volume = Integer.parseInt(bundle.getString(AddDrinkActivity.VOLUME));
             String imagePath = bundle.getString(AddDrinkActivity.IMAGE_PATH);
-            Log.i(TAG, bundle.getString(AddDrinkActivity.IMAGE_PATH)); // TODO hvorfor duer det her ikke?
 
             String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
             int calories = 0;
@@ -330,8 +327,9 @@ public class MainFragment extends Fragment {
             byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
             Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-            Drink newDrink = new Drink(name, alcohol, volume, calories, image, System.currentTimeMillis());
-            mAdapter.addToDatabase(name, alcohol, volume, calories, imagePath, System.currentTimeMillis()); // TODO add image resource to device and save resource id to database
+            long time = System.currentTimeMillis();
+            Drink newDrink = new Drink(name, alcohol, volume, calories, image, time);
+            mAdapter.addToDatabase(name, alcohol, volume, calories, imagePath, time);
             mAdapter.add(newDrink);
             mAdapter.notifyDataSetChanged();
             mGrid.invalidateViews();

@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +15,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GridAdapter extends BaseAdapter {
-    public static final String TAG = "Alculator";
 
     private final Context mContext;
     private ArrayList<Drink> list = new ArrayList<>();
@@ -47,7 +43,7 @@ public class GridAdapter extends BaseAdapter {
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            String filePath = cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_LAST_USE));
+            String filePath = cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_IMAGE));
             Bitmap image = getBitmapFromFilePath(filePath);
 
             list.add(new Drink(cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_NAME)),
@@ -85,27 +81,15 @@ public class GridAdapter extends BaseAdapter {
         sort();
     }
 
-    private Bitmap getBitmapFromFilePath(String filePath) {
-        File sd = Environment.getExternalStorageDirectory();
+    public static Bitmap getBitmapFromFilePath(String filePath) {
         File image = new File(filePath);
-        Log.i(GridAdapter.TAG, filePath); // TODO remove later
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
 
-        return bitmap;
-
         //bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
 
-        //imageView.setImageBitmap(bitmap);
-
-        /*
-        ParcelFileDescriptor parcelFileDescriptor =
-                mContext.getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;*/
+        return bitmap;
     }
 
     public void add(Drink newDrink) {
