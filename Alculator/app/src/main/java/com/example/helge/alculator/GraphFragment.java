@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +16,31 @@ import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GraphFragment extends Fragment {
 
-    private double mHighScore, mCurrentScore, mCountScore, mBodyWater, mBodyWeight;
+    private double mHighScore, mCurrentScore, mCountScore;
     private TextView mHighScoreView, mCurrentScoreView, mCountScoreView;
-    private GraphView mGraph;
     private Viewport mViewport;
     private LineGraphSeries<DataPoint> mSeries;
+    private ArrayList<DataPoint> mDataPoints;
     private static final DecimalFormat df = new DecimalFormat("00");
     private static final DecimalFormat pf = new DecimalFormat("#0.00");
     private static final DecimalFormat sf = new DecimalFormat("##");
-    private static int DAYS = 0;
 
     private SharedPreferences cPrefs, tPrefs, sPrefs;
+
+    private String fileName = "DATA_POINTS";
+    private static int DAYS = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,9 +50,21 @@ public class GraphFragment extends Fragment {
         mCurrentScoreView = (TextView) view.findViewById(R.id.score_current);
         mCountScoreView = (TextView) view.findViewById(R.id.score_count);
 
-        mGraph = (GraphView) view.findViewById(R.id.graphView);
+        GraphView mGraph = (GraphView) view.findViewById(R.id.graphView);
         mViewport = mGraph.getViewport();
-        mSeries = new LineGraphSeries<>(new DataPoint[] { new DataPoint(getHours(), 0) });
+
+        cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
+        tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
+        sPrefs = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        mDataPoints = readFile();
+        mSeries = new LineGraphSeries<>(new DataPoint[] { });
+
+        double mLastX = 0;
+        for (DataPoint dp : mDataPoints) {
+            mSeries.appendData(dp, true, 100);
+            mLastX = dp.getX();
+        }
 
         mGraph.addSeries(mSeries);
         mGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
@@ -59,8 +81,19 @@ public class GraphFragment extends Fragment {
 
         mViewport.setScrollable(true);
         mViewport.setScalable(true);
+        mViewport.setXAxisBoundsManual(true);
+        mViewport.setMinX(mLastX - 0.75);
+        mViewport.setMaxX(mLastX + 0.25);
+
+        updateLabels();
 
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        writeFile();
     }
 
     public void updateLabels() {
@@ -71,13 +104,14 @@ public class GraphFragment extends Fragment {
         mCountScoreView.setText("" + sf.format(Math.ceil(mCountScore)) + " x ");
     }
 
-    private double getHours() {
-        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + Calendar.getInstance().get(Calendar.MINUTE)/60 + 24*DAYS;
-    }
-
     protected boolean updateGraph() {
+        double mHours = getHours();
+        DataPoint mDataPoint = new DataPoint(mHours, mCurrentScore);
         try {
-            mSeries.appendData(new DataPoint(getHours(), mCurrentScore), true, 100);
+            mSeries.appendData(mDataPoint, true, 200);
+            mViewport.setMinX(mHours - 0.50);
+            mViewport.setMaxX(mHours + 0.25);
+            mDataPoints.add(mDataPoint);
             return true;
         } catch (IllegalArgumentException e) {
             DAYS++;
@@ -86,15 +120,9 @@ public class GraphFragment extends Fragment {
     }
 
     private void getPrefs() {
-        if (null == cPrefs)
-            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
-        if (null == tPrefs)
-            tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
-        if (null == sPrefs)
-            sPrefs = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
 
-        mBodyWater = sPrefs.getString("gender", "Male").equals("Male") ? 0.58 : 0.49;
-        mBodyWeight = sPrefs.getInt("weight", 70);
+        double mBodyWater = sPrefs.getString("gender", "Male").equals("Male") ? 0.58 : 0.49;
+        double mBodyWeight = (double) sPrefs.getInt("weight", 70);
 
         mHighScore = getDouble(tPrefs, "mHighScore", 0);
         mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
@@ -103,14 +131,46 @@ public class GraphFragment extends Fragment {
 
     protected void resetGraph() {
         DAYS = 0;
-        mSeries.resetData(new DataPoint[]{new DataPoint(getHours(), 0)});
+        mSeries.resetData(new DataPoint[]{});
+        mDataPoints.clear();
     }
 
     double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
     }
 
-    private SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
-        return edit.putLong(key, Double.doubleToRawLongBits(value));
+    private double getHours() {
+        return Calendar.getInstance().get(Calendar.HOUR_OF_DAY) * 1.0 + Calendar.getInstance().get(Calendar.MINUTE) / 60.0 + 24.0 * DAYS;
+    }
+
+    public void writeFile() {
+        try {
+            FileOutputStream fos = getActivity().getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+            ObjectOutputStream of = new ObjectOutputStream(fos);
+            of.writeObject(mDataPoints);
+            of.flush();
+            of.close();
+            fos.close();
+        }
+        catch (Exception e) {
+            Log.e("InternalStorage", e.getMessage());
+        }
+    }
+
+    public ArrayList<DataPoint> readFile() {
+        ArrayList<DataPoint> toReturn = new ArrayList<>();
+        try {
+            FileInputStream fis = getActivity().getApplicationContext().openFileInput(fileName);
+            ObjectInputStream oi = new ObjectInputStream(fis);
+            toReturn = (ArrayList<DataPoint>) oi.readObject();
+            oi.close();
+        } catch (FileNotFoundException e) {
+            Log.e("InternalStorage", e.getMessage());
+        } catch (IOException e) {
+            Log.e("InternalStorage", e.getMessage());
+        } catch (ClassNotFoundException e) {
+            Log.e("InternalStorage", e.getMessage());
+        }
+        return toReturn;
     }
 }
