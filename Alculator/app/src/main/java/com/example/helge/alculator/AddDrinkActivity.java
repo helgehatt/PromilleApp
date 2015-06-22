@@ -103,9 +103,8 @@ public class AddDrinkActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), SELECT_PICTURE_REQUEST);
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(intent, SELECT_PICTURE_REQUEST);
             }
         });
     }
