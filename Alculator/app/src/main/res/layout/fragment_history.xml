@@ -10,25 +10,17 @@
         android:layout_weight="0.5"
         android:gravity="center">
         <TextView
-            android:textSize="25dp"
-            android:gravity="center"
-            android:layout_weight="1"/>
-        <TextView
             android:text="@string/history_current"
             android:textSize="25dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:gravity="left"
+            android:gravity="center"
             android:layout_weight="1"/>
         <TextView
             android:text="@string/history_total"
             android:textSize="25dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:gravity="right"
-            android:layout_weight="1"/>
-        <TextView
-            android:textSize="25dp"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            android:gravity="left"
+            android:layout_weight="0.5"/>
     </TableRow>
 
     <View
