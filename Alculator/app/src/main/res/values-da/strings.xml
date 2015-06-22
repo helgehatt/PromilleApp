@@ -42,10 +42,10 @@
 
     <!-- Tutorial strings -->
     <string name="tutorial_1">"Velkommen til Alculator\n\Når du åbner denne applikation vil du bliver introduceret til denne skærm.\n\Denne vejledning vil lede dig gennem hvor nemt det er at bruge den egen personlige Alculator."</string>
-    <string name="tutorial_2">"First thing you need to know is how to add drinks to your alculator. To do this click this button.\n\When you have added a drink they will also show up in this window along with this button, you may click you drink to select it or you can hold your finger on them to see info on your drink."</string>
-    <string name="tutorial_3">"When you have a drink selected, click these buttons to add or subtract one of your selected drink to your alculators per mille calculation."</string>
-    <string name="tutorial_4">"Use these tabs on the top of the screen to jump between menus that will tell you more about your personal per mille calculation or change you settings."</string>
-    <string name="tutorial_5">"When adding a drink you will encounter this screen for filling out information on your drink."</string>
-    <string name="tutorial_6">"You may click this empty frame to add a personal picture from your gallery to your drink.\n\There is nothing more to it, your alculator is ready for use."</string>
+    <string name="tutorial_2">"Det første du har brug for at vide er hvordan du tillægger en ny drink til din Alculator. For at gøre dette, klik den viste knap.\n\Når du har tillagt en ny drink vil de også komme frem i dette vindue sammen med denne knap, du kan klikke dem for at markere dem eller holde fingeren på dem for se info på din drink."</string>
+    <string name="tutorial_3">"Når du har en drink markeret, klik disse knapper at ligge en drink til eller trække en drink fra din Alculator promille beregning."</string>
+    <string name="tutorial_4">"Brug disse menuer i toppen af skærmen til at bevæge dig mellem skærmbilleder der kan give dig mere information om din Alculator bergning eller ændre indstillingerne for din Alculator."</string>
+    <string name="tutorial_5">"Når du tillægger en ny drink til din Alculator vil du måde denne skærm hvor du kan tilføje information til din drink."</string>
+    <string name="tutorial_6">"Du kan klikke på denne tomme ramme for at tillægge et personligt billede til din drink fra dit galleri.\n\Det er så nemt det er, du er nu klar til at bruge din Alculator."</string>
 
 </resources>
