@@ -71,10 +71,8 @@ public class GraphFragment extends Fragment {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
-                    String[] num = super.formatLabel(value % 24, true).split(",|\\.");
-                    return num[0] + ":" + df.format(Double.parseDouble("0."+num[1]) * 60);
-                    //double num = Double.parseDouble(super.formatLabel(value % 24, true));
-                    //return df.format(num % 100 - num % 1) + ":" + df.format(num % 1 * 60);
+                    double num = Double.parseDouble(super.formatLabel(value % 24, true).replace(",","."));
+                    return df.format(num % 100 - num % 1) + ":" + df.format(num % 1 * 60);
                 } else {
                     return super.formatLabel(value, false);
                 }
@@ -84,8 +82,10 @@ public class GraphFragment extends Fragment {
         mViewport.setScrollable(true);
         mViewport.setScalable(true);
         mViewport.setXAxisBoundsManual(true);
-        mViewport.setMinX(mLastX - 0.75);
-        mViewport.setMaxX(mLastX + 0.25);
+        if (0.0 != mLastX) {
+            mViewport.setMinX(mLastX - 0.75);
+            mViewport.setMaxX(mLastX + 0.25);
+        }
 
         updateLabels();
 
