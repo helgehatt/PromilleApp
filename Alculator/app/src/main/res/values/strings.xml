@@ -18,9 +18,9 @@
     <string name="main_button_add">+</string>
     <string name="main_button_rem">-</string>
     <string name="main_no_drink_added">No drink added</string>
-    <string name="sober_in">Sober in </string>
-    <string name="sober_in_hours"> h </string>
-    <string name="sober_in_minutes"> m</string>
+    <string name="sober_in">Sober in</string>
+    <string name="sober_in_hours">h</string>
+    <string name="sober_in_minutes">m</string>
 
     <string name="settings_metric">Metric</string>
     <string name="settings_imperial">Imperial</string>
@@ -35,7 +35,7 @@
     <string name="add_drink_volume">Volume:</string>
     <string name="add_drink_alcohol_content">Alcohol content:</string>
     <string name="add_drink_name">Drink name:</string>
-    <string name="add_drink_name_hint">Enter your drink name</string>
+    <string name="add_drink_name_hint">Enter name here</string>
     <string name="add_drink_cancel">Cancel</string>
     <string name="add_drink_ok">OK</string>
     <string name="add_drink_missing_fields">Required fields are missing</string>

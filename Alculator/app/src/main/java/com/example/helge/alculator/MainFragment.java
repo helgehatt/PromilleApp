@@ -263,7 +263,7 @@ public class MainFragment extends Fragment {
         String soberIn = ""+getResources().getText(R.string.sober_in);
         String soberInH = ""+getResources().getText(R.string.sober_in_hours);
         String soberInM = ""+getResources().getText(R.string.sober_in_minutes);
-        mSoberInView.setText(soberIn + sf.format(n % 100 - n % 1) + soberInH + sf.format(n % 1 * 60) + soberInM);
+        mSoberInView.setText(soberIn +" "+ sf.format(n % 100 - n % 1) +" "+ soberInH +" "+ sf.format(n % 1 * 60) +" "+ soberInM);
     }
 
     private void initPrefs() {

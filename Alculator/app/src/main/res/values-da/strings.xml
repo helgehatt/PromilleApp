@@ -19,9 +19,9 @@
     <string name="main_button_add">+</string>
     <string name="main_button_rem">-</string>
     <string name="main_no_drink_added">Ingen drink tilføjet</string>
-    <string name="sober_in">Ædru om </string>
-    <string name="sober_in_hours"> t </string>
-    <string name="sober_in_minutes"> m</string>
+    <string name="sober_in">Ædru om</string>
+    <string name="sober_in_hours">t</string>
+    <string name="sober_in_minutes">m</string>
 
     <string name="settings_metric">Kilogram</string>
     <string name="settings_imperial">Pund</string>
@@ -35,8 +35,8 @@
     <string name="add_drink_kcal_optional">(Kalorier):</string>
     <string name="add_drink_volume">Volumen:</string>
     <string name="add_drink_alcohol_content">Alkoholindhold:</string>
-    <string name="add_drink_name">Navn på drink:</string>
-    <string name="add_drink_name_hint">Enter your drink name</string>
+    <string name="add_drink_name">Drinknavn:</string>
+    <string name="add_drink_name_hint">Skriv navnet her</string>
     <string name="add_drink_cancel">Annuller</string>
     <string name="add_drink_ok">OK</string>
     <string name="add_drink_missing_fields">Obligatoriske felter mangler</string>
