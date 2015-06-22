@@ -18,6 +18,10 @@
 
     <string name="main_button_add">+</string>
     <string name="main_button_rem">-</string>
+    <string name="main_no_drink_added">Ingen drink tilføjet</string>
+    <string name="sober_in">Ædru om </string>
+    <string name="sober_in_hours"> t </string>
+    <string name="sober_in_minutes"> m</string>
 
     <string name="settings_metric">Kilogram</string>
     <string name="settings_imperial">Pund</string>
@@ -32,16 +36,26 @@
     <string name="add_drink_volume">Volumen:</string>
     <string name="add_drink_alcohol_content">Alkoholindhold:</string>
     <string name="add_drink_name">Navn på drink:</string>
-    <string name="permille_above_5">Your blood alcohol content is now above 5</string>
-    <string name="permille_above_3">Your blood alcohol content is now above 3</string>
-    <string name="permille_above_2">Your blood alcohol content is now above 2</string>
-    <string name="permille_above_1">Your blood alcohol content is now above 1</string>
-    <string name="permille_above_05">Your blood alcohol content is now above 0.5</string>
-    <string name="permille_below_05">Your blood alcohol content is still below 0.5</string>
-    <string name="settings_apply">Apply changes</string>
+    <string name="add_drink_name_hint">Enter your drink name</string>
+    <string name="add_drink_cancel">Annuller</string>
+    <string name="add_drink_ok">OK</string>
+    <string name="add_drink_missing_fields">Obligatoriske felter mangler</string>
+
+    <string name="permille_above_5">Din promille er nu over 5</string>
+    <string name="permille_above_3">Din promille er nu over 3</string>
+    <string name="permille_above_2">Din promille er nu over 2</string>
+    <string name="permille_above_1">Din promille er nu over 1</string>
+    <string name="permille_above_05">Din promille er nu over 0,5</string>
+    <string name="permille_below_05">Din promille er stadig under 0,5</string>
+
     <string name="dialog_ok">OK</string>
-    <string name="dialog_delete">Delete</string>
+    <string name="dialog_delete">Slet</string>
     <string name="dialog_title">Info</string>
+
+    <string name="page_history">Historie</string>
+    <string name="page_graph">Graf</string>
+    <string name="page_main">Startside</string>
+    <string name="page_settings">Indstillinger</string>
 
     <!-- Tutorial strings -->
     <string name="tutorial_1">"Velkommen til Alculator\nNår du åbner denne applikation, vil du blive introduceret til denne skærm.\nDenne vejledning vil lede dig gennem, hvor nemt det er at bruge din egen personlige Alculator."</string>

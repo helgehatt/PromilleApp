@@ -26,8 +26,6 @@ public class AddDrinkActivity extends Activity {
     public static final String IMAGE = "DRINK_IMAGE";
     public static final String IMAGE_PATH = "DRINK_IMAGE_PATH";
 
-    private static final String MISSING_FIELDS = "Required fields are missing.";
-
     private EditText nameField;
     private EditText percentageField;
     private EditText volumeField;
@@ -64,7 +62,7 @@ public class AddDrinkActivity extends Activity {
                 String caloriesString = caloriesField.getText().toString();
 
                 if (nameString.isEmpty() || alcoholString.isEmpty() || volumeString.isEmpty()){
-                    Toast.makeText(getApplicationContext(), MISSING_FIELDS, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getResources().getText(R.string.add_drink_missing_fields), Toast.LENGTH_LONG).show();
                     return;
                 }
                 

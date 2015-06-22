@@ -17,6 +17,10 @@
 
     <string name="main_button_add">+</string>
     <string name="main_button_rem">-</string>
+    <string name="main_no_drink_added">No drink added</string>
+    <string name="sober_in">Sober in </string>
+    <string name="sober_in_hours"> h </string>
+    <string name="sober_in_minutes"> m</string>
 
     <string name="settings_metric">Metric</string>
     <string name="settings_imperial">Imperial</string>
@@ -26,12 +30,15 @@
     <string name="settings_weight">Weight:</string>
     <string name="settings_kg">kg</string>
     <string name="settings_lbs">lbs</string>
-    <string name="settings_reset">Reset</string>
 
     <string name="add_drink_kcal_optional">(Calories):</string>
     <string name="add_drink_volume">Volume:</string>
     <string name="add_drink_alcohol_content">Alcohol content:</string>
     <string name="add_drink_name">Drink name:</string>
+    <string name="add_drink_name_hint">Enter your drink name</string>
+    <string name="add_drink_cancel">Cancel</string>
+    <string name="add_drink_ok">OK</string>
+    <string name="add_drink_missing_fields">Required fields are missing</string>
 
     <string name="permille_above_5">Your blood alcohol content is now above 5</string>
     <string name="permille_above_3">Your blood alcohol content is now above 3</string>
@@ -44,14 +51,18 @@
     <string name="dialog_delete">Delete</string>
     <string name="dialog_title">Info</string>
 
+    <string name="page_history">History</string>
+    <string name="page_graph">Graph</string>
+    <string name="page_main">Main</string>
+    <string name="page_settings">Settings</string>
+
     <!-- Achievement strings -->
     <!--<string name="achievement_unlocked">Achievement unlocked!</string>
     <string name="achievement_heavy_drinker">HEAVY DRINKER</string>
     <string name="achievement_heavy_drinker_text">Achieve a blood alcohol content above 3</string>
 
     <string name="achievement_probably_dead">PROBABLY DEAD</string>
-    <string name="achievement_probably_dead_text">You should probably be dead by now</string>
-    <string name="settings_apply">Apply changes</string>-->
+    <string name="achievement_probably_dead_text">You should probably be dead by now</string>-->
 
     <!-- Tutorial strings -->
     <string name="tutorial_1">"Welcome to Alculator.\nUpon opening the application you will be introduced to this screen.\nThis tutorial will guide you through basic use of the application."</string>
@@ -60,6 +71,5 @@
     <string name="tutorial_4">"Use the tabs on the top of the screen to jump between menus, which provide additional information about your Alculator history or enable you to change your settings."</string>
     <string name="tutorial_5">"When adding a drink, you will encounter this screen for filling out information about your drink."</string>
     <string name="tutorial_6">"You may click this empty frame to add a personal picture from your gallery to your drink.\nThere is nothing more to it, your Alculator is ready for use!"</string>
-
 
 </resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Alculator</string>
+
+    <string name="history_current">VODKA</string>
+    <string name="history_total">VODKA</string>
+    <string name="history_volume">VODKA</string>
+    <string name="history_quantity">VODKA</string>
+    <string name="history_alcohol">VODKA</string>
+    <string name="history_calories">VODKA</string>
+    <string name="history_kcal">VODKA</string>
+    <string name="history_centiliters">VODKA</string>
+    <string name="history_liters">VODKA</string>
+
+    <string name="graph_score_high">VODKA VODKA:</string>
+    <string name="graph_score_current">VODKA VODKA:</string>
+    <string name="graph_score_count">VODKA VODKA:</string>
+
+    <string name="main_button_add">+</string>
+    <string name="main_button_rem">-</string>
+    <string name="main_no_drink_added">VODKA VODKA</string>
+    <string name="sober_in">VODKA </string>
+    <string name="sober_in_hours"> VODKA </string>
+    <string name="sober_in_minutes"></string>
+
+    <string name="settings_metric">VODKA</string>
+    <string name="settings_imperial">VODKA</string>
+    <string name="settings_gender">VODKA:</string>
+    <string name="settings_male">VODKA</string>
+    <string name="settings_female">VODKA</string>
+    <string name="settings_weight">VODKA:</string>
+    <string name="settings_kg">VODKA</string>
+    <string name="settings_lbs">VODKA</string>
+
+    <string name="add_drink_kcal_optional">(VODKA):</string>
+    <string name="add_drink_volume">VODKA:</string>
+    <string name="add_drink_alcohol_content">VODKA VODKA:</string>
+    <string name="add_drink_name">VODKA:</string>
+    <string name="add_drink_name_hint">VODKA</string>
+    <string name="add_drink_cancel">VODKA</string>
+    <string name="add_drink_ok">VODKA</string>
+    <string name="add_drink_missing_fields">VODKA VODKA VODKA VODKA</string>
+
+    <string name="permille_above_5">VODKA VODKA VODKA VODKA VODKA</string>
+    <string name="permille_above_3">VODKA VODKA VODKA VODKA</string>
+    <string name="permille_above_2">VODKA VODKA VODKA</string>
+    <string name="permille_above_1">VODKA VODKA</string>
+    <string name="permille_above_05">VODKA</string>
+    <string name="permille_below_05"></string>
+
+    <string name="dialog_ok">VODKA</string>
+    <string name="dialog_delete">VODKA</string>
+    <string name="dialog_title">VODKA</string>
+
+    <string name="page_history">VODKA</string>
+    <string name="page_graph">VODKA</string>
+    <string name="page_main">VODKA</string>
+    <string name="page_settings">VODKA</string>
+
+    <!-- Tutorial strings -->
+    <string name="tutorial_1">"VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA"</string>
+    <string name="tutorial_2">"VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA"</string>
+    <string name="tutorial_3">"VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA"</string>
+    <string name="tutorial_4">"VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA"</string>
+    <string name="tutorial_5">"VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA"</string>
+    <string name="tutorial_6">"VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA VODKA"</string>
+
+</resources>

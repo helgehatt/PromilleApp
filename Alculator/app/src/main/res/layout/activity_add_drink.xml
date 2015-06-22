@@ -17,13 +17,13 @@
             android:textSize="30sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:text="Name:"
+            android:text="@string/add_drink_name"
             android:id="@+id/drink_name" />
 
         <EditText
             android:layout_width="200sp"
             android:layout_height="match_parent"
-            android:hint="Enter drink name"
+            android:hint="@string/add_drink_name_hint"
             android:id="@+id/editText_drink_name"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
@@ -100,7 +100,7 @@
             android:textSize="30sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:text="cl"
+            android:text="@string/history_centiliters"
             android:id="@+id/cl" />
     </RelativeLayout>
 
@@ -165,14 +165,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/add_drink_cancel"
             android:id="@+id/button_cancel"
             android:layout_weight="0.5" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OK"
+            android:text="@string/add_drink_ok"
             android:id="@+id/button_ok"
             android:layout_weight="0.5" />
 

@@ -260,7 +260,10 @@ public class MainFragment extends Fragment {
 
         double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017);
         double n = mCurrentScore / mMetabolism / 10;
-        mSoberInView.setText("Sober in " + sf.format(n % 100 - n % 1) + " h " + sf.format(n % 1 * 60) + " m");
+        String soberIn = ""+getResources().getText(R.string.sober_in);
+        String soberInH = ""+getResources().getText(R.string.sober_in_hours);
+        String soberInM = ""+getResources().getText(R.string.sober_in_minutes);
+        mSoberInView.setText(soberIn + sf.format(n % 100 - n % 1) + soberInH + sf.format(n % 1 * 60) + soberInM);
     }
 
     private void initPrefs() {
@@ -345,7 +348,7 @@ public class MainFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
             mGrid.invalidateViews();
         } else if (resultCode == Activity.RESULT_CANCELED && requestCode == NEW_DRINK_REQUEST) {
-            Toast.makeText(getActivity().getApplicationContext(), "No drink added", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity().getApplicationContext(), getResources().getText(R.string.main_no_drink_added), Toast.LENGTH_LONG).show();
         }
     }
 

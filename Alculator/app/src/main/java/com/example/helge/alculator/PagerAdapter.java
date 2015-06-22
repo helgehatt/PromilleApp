@@ -25,13 +25,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return "History";
+                return mContext.getResources().getString(R.string.page_history);
             case 1:
-                return "Graph";
+                return mContext.getResources().getString(R.string.page_graph);
             case 2:
-                return "Main";
+                return mContext.getResources().getString(R.string.page_main);
             case 3:
-                return "Settings";
+                return mContext.getResources().getString(R.string.page_settings);
         }
         return null;
     }
