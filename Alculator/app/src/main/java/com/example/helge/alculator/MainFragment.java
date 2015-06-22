@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -21,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,6 +47,7 @@ public class MainFragment extends Fragment {
     private static final DecimalFormat pf = new DecimalFormat("#0.00");
     private static final DecimalFormat sf = new DecimalFormat("###");
 
+    static final int NEW_DRINK_REQUEST = 1;
     static final int ADD_DRINK_REQUEST = 0;
     static final long ONE_MINUTE = 1000 * 60;
 
@@ -68,8 +69,10 @@ public class MainFragment extends Fragment {
                 Drink drink = mAdapter.getSelectedItem();
                 if (drink != null) {
                     drink.incQuantity();
+                    mAdapter.sort();
                     Log.i(TAG, "Increment drink");
                     mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
+                    mAdapter.setSelected(0);
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
 
@@ -97,6 +100,7 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     if (drink.getQuantity() > 0) {
                         drink.decQuantity();
+                        mAdapter.sort();
                         Log.i(TAG, "Decrement drink");
                         mAdapter.notifyDataSetChanged();
                         mGrid.invalidateViews();
@@ -123,20 +127,23 @@ public class MainFragment extends Fragment {
         mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), "Click: Position: " + position, Toast.LENGTH_LONG).show();
                 if (!mAdapter.setSelected(position)) {
                     Intent addDrinkIntent = new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class);
-                    startActivityForResult(addDrinkIntent, ADD_DRINK_REQUEST);
+                    startActivityForResult(addDrinkIntent, NEW_DRINK_REQUEST);
                 }
+                mGrid.invalidateViews();
             }
         });
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), "Long click: Position: " + position, Toast.LENGTH_LONG).show();
-                Drink drink = mAdapter.getSelectedItem();
-                Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), R.drawable.drink_black_box)
-                        .show(getFragmentManager(), "Dialog");
+                mAdapter.setSelected(position);
+                Drink drink = mAdapter.getItem(position);
+                if (drink != null){
+                    Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), drink.getImage())
+                            .show(getFragmentManager(), "Dialog");
+                }
+                mGrid.invalidateViews();
                 return true;
             }
         });
@@ -311,11 +318,12 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (ADD_DRINK_REQUEST == requestCode && Activity.RESULT_OK == resultCode){
+        if (NEW_DRINK_REQUEST == requestCode && Activity.RESULT_OK == resultCode){
             Bundle bundle = data.getExtras();
             String name = bundle.getString(AddDrinkActivity.NAME);
             double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
             int volume = Integer.parseInt(bundle.getString(AddDrinkActivity.VOLUME));
+            String imagePath = bundle.getString(AddDrinkActivity.IMAGE_PATH);
 
             String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
             int calories = 0;
@@ -325,14 +333,19 @@ public class MainFragment extends Fragment {
 
             //Uncompress image.
             byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
-            Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            Bitmap image;
+            if (bytes != null)
+                image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            else
+                image = ((BitmapDrawable) getResources().getDrawable(R.drawable.drink_empty)).getBitmap();
 
-            Drink newDrink = new Drink(name, alcohol, volume, calories, image, System.currentTimeMillis());
-            mAdapter.addToDatabase(name, alcohol, volume, calories, R.drawable.drink_beer_icon, System.currentTimeMillis()); // TODO add image resource to device and save resource id to database
+            long time = System.currentTimeMillis();
+            Drink newDrink = new Drink(name, alcohol, volume, calories, image, time);
+            mAdapter.addToDatabase(name, alcohol, volume, calories, imagePath, time);
             mAdapter.add(newDrink);
             mAdapter.notifyDataSetChanged();
             mGrid.invalidateViews();
-        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == ADD_DRINK_REQUEST) {
+        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == NEW_DRINK_REQUEST) {
             Toast.makeText(getActivity().getApplicationContext(), "No drink added", Toast.LENGTH_LONG).show();
         }
     }

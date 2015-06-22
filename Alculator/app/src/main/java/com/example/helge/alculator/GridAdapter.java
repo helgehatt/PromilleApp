@@ -7,28 +7,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class GridAdapter extends BaseAdapter {
-    public static final String TAG = "Alculator";
 
     private final Context mContext;
-    private ArrayList<Drink> list = new ArrayList<Drink>();
-    private int selectedItem;
+    private ArrayList<Drink> list = new ArrayList<>();
+    private Drink selectedItem;
     private SQLiteOpenHelper mDbHelper;
     private SQLiteDatabase mDatabase;
 
@@ -38,35 +35,36 @@ public class GridAdapter extends BaseAdapter {
         mDbHelper = new DrinksDbHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
 
-        clearDatabase(); // TODO skal fjernes, n�r vi er lidt l�ngere
-        addToDatabase("Beer", 4.5, 33, 168, R.drawable.drink_beer_icon, System.currentTimeMillis());
-        addToDatabase("Light beer", 2.1, 33, 98, R.drawable.drink_beer_icon, System.currentTimeMillis());
-        addToDatabase("Shot", 32, 4, 20, R.drawable.drink_shot_icon, System.currentTimeMillis());
-
         Cursor cursor = readDrinks();
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            String filePath = cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_IMAGE));
+            Bitmap image;
+            if (filePath != null)
+                image = Bitmap.createScaledBitmap(getBitmapFromFilePath(filePath), 200, 200, false);
+            else
+                image = ((BitmapDrawable) mContext.getResources().getDrawable(R.drawable.drink_empty)).getBitmap();
+
             list.add(new Drink(cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_NAME)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_VOLUME)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_CALORIES)),
-                    BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(),
-                            cursor.getInt(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_IMAGE))), // TODO get image resource from database
+                    image,
                     cursor.getLong(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_LAST_USE)) ));
             cursor.moveToNext();
         }
         cursor.close();
     }
 
-    public void addToDatabase(String name, double percentage, double volume, double calories, int imageID, long lastUse) {
+    public void addToDatabase(String name, double percentage, double volume, double calories, String imagePath, long lastUse) {
         ContentValues values = new ContentValues();
 
         values.put(DrinksContract.DrinkEntry.COLUMN_NAME, name);
         values.put(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE, percentage);
         values.put(DrinksContract.DrinkEntry.COLUMN_VOLUME, volume);
         values.put(DrinksContract.DrinkEntry.COLUMN_CALORIES, calories);
-        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, imageID);
+        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, imagePath);
         values.put(DrinksContract.DrinkEntry.COLUMN_LAST_USE, lastUse);
         mDatabase.insert(DrinksContract.DrinkEntry.TABLE_NAME, null, values);
         values.clear();
@@ -80,16 +78,26 @@ public class GridAdapter extends BaseAdapter {
 
         drink.setLastUse(lastUse);
 
-        Collections.sort(list, new Comparator<Drink>() {
-            @Override
-            public int compare(Drink lhs, Drink rhs) {
-                return lhs.getLastUse() < rhs.getLastUse() ? 1 : -1;
-            }
-        });
+        sort();
+    }
+
+    public static Bitmap getBitmapFromFilePath(String filePath) {
+        File image = new File(filePath);
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        Bitmap bitmap;
+        bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+
+        return bitmap;
     }
 
     public void add(Drink newDrink) {
         list.add(newDrink);
+        sort();
+    }
+
+    protected void sort(){
+        Collections.sort(list);
     }
 
     private Cursor readDrinks() {
@@ -171,6 +179,11 @@ public class GridAdapter extends BaseAdapter {
             else
                 counter.setText("");
 
+            if (drink.isSelected())
+                view.setBackgroundResource(R.drawable.btn_blue_matte);
+            else
+                view.setBackgroundResource(R.drawable.btn_black);
+
             image.setImageBitmap(drink.getImage());
         }
         
@@ -180,17 +193,14 @@ public class GridAdapter extends BaseAdapter {
     public boolean setSelected(int position) {
         if (position == list.size()) return false;
         if (0 <= position && position < list.size()){
-            list.get(selectedItem).setSelected(false);
-            list.get(position).setSelected(true);
-            selectedItem = position;
+            if (selectedItem != null) selectedItem.setSelected(false);
+            selectedItem = list.get(position);
+            selectedItem.setSelected(true);
         }
         return true;
     }
 
     public Drink getSelectedItem() {
-        if (0 <= selectedItem && selectedItem < list.size()){
-            return list.get(selectedItem);
-        }
-        return null;
+        return selectedItem;
     }
 }

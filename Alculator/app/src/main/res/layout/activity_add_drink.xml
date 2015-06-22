@@ -55,7 +55,7 @@
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/percent"
             android:layout_toStartOf="@+id/percent"
-            android:maxLength="3"
+            android:maxLength="4"
             android:maxLines="1"
             android:inputType="number|numberDecimal" />
 
@@ -163,7 +163,7 @@
             android:clickable="true"
             android:layout_gravity="center_vertical"
             android:layout_alignParentRight="true"
-            android:src="@drawable/guldoel" />
+            android:background="@drawable/btn_black"/>
     </RelativeLayout>
 
     <TableRow
