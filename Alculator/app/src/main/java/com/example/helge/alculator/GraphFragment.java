@@ -58,10 +58,13 @@ public class GraphFragment extends Fragment {
         sPrefs = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
 
         mDataPoints = readFile();
-
         mSeries = new LineGraphSeries<>(new DataPoint[] { });
-        for (DataPoint dp : mDataPoints)
+
+        double mLastX = 0;
+        for (DataPoint dp : mDataPoints) {
             mSeries.appendData(dp, true, 100);
+            mLastX = dp.getX();
+        }
 
         mGraph.addSeries(mSeries);
         mGraph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
@@ -79,6 +82,8 @@ public class GraphFragment extends Fragment {
         mViewport.setScrollable(true);
         mViewport.setScalable(true);
         mViewport.setXAxisBoundsManual(true);
+        mViewport.setMinX(mLastX - 0.75);
+        mViewport.setMaxX(mLastX + 0.25);
 
         updateLabels();
 
@@ -104,6 +109,7 @@ public class GraphFragment extends Fragment {
         DataPoint mDataPoint = new DataPoint(mHours, mCurrentScore);
         try {
             mSeries.appendData(mDataPoint, true, 200);
+            mViewport.setMinX(mHours - 0.50);
             mViewport.setMaxX(mHours + 0.25);
             mDataPoints.add(mDataPoint);
             return true;
