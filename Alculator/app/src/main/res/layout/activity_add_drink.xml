@@ -145,25 +145,15 @@
         android:layout_height="263dp"
         android:layout_gravity="center_horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="Delete"
-            android:id="@+id/button_delete"
-            android:layout_gravity="center_vertical"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
         <ImageView
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:id="@+id/image"
             android:clickable="true"
             android:layout_gravity="center_vertical"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/btn_black"/>
+            android:background="@drawable/btn_black"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <TableRow

@@ -69,10 +69,10 @@
         android:weightSum="1">
 
         <Button
-            android:id="@+id/dialog_button_edit"
+            android:id="@+id/dialog_button_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit"
+            android:text="@string/dialog_delete"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_weight="0.5" />
 
@@ -80,7 +80,7 @@
             android:id="@+id/dialog_button_ok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="OK"
+            android:text="@string/dialog_ok"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_weight="0.5" />
 

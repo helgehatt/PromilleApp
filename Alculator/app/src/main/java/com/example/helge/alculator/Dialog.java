@@ -3,10 +3,9 @@ package com.example.helge.alculator;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 
 
-public class Dialog extends DialogFragment implements View.OnClickListener {
+public class Dialog extends DialogFragment {
 
     private String mName;
     private Bitmap mImage;
@@ -71,23 +70,22 @@ public class Dialog extends DialogFragment implements View.OnClickListener {
         imageView.setImageBitmap(mImage);
 
         Button okButton = (Button) view.findViewById(R.id.dialog_button_ok);
-        Button editButton = (Button) view.findViewById(R.id.dialog_button_edit);
+        Button deleteButton = (Button) view.findViewById(R.id.dialog_button_delete);
 
-        okButton.setOnClickListener(this);
-        editButton.setOnClickListener(this);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainFragment) Dialog.this.getTargetFragment()).onDialogDeletePressed();
+                dismiss();
+            }
+        });
 
         return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.dialog_button_ok:
-                dismiss();
-                break;
-            case R.id.dialog_button_edit:
-                break;
-        }
     }
 }
