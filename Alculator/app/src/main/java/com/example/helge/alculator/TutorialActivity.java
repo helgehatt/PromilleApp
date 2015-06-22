@@ -32,7 +32,7 @@ public class TutorialActivity extends Activity {
         arrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (1 < state){
+                if (1 < state) {
                     state--;
                     updateState();
                 }
@@ -45,6 +45,12 @@ public class TutorialActivity extends Activity {
                     state++;
                     updateState();
                 }
+            }
+        });
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
