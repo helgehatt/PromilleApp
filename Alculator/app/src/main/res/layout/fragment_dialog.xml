@@ -59,8 +59,7 @@
             android:layout_height="200sp"
             android:layout_weight="1"
             android:layout_alignParentRight="true"
-            android:background="@drawable/btn_black"
-            android:src="@drawable/guldoel"/>
+            android:background="@drawable/btn_black"/>
 
     </LinearLayout>
 

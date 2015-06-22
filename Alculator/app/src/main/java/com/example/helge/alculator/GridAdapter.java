@@ -47,7 +47,7 @@ public class GridAdapter extends BaseAdapter {
             String filePath = cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_IMAGE));
             Bitmap image;
             if (filePath != null)
-                image = getBitmapFromFilePath(filePath);
+                image = Bitmap.createScaledBitmap(getBitmapFromFilePath(filePath), 200, 200, false);
             else
                 image = ((BitmapDrawable) mContext.getResources().getDrawable(R.drawable.drink_empty)).getBitmap();
 
