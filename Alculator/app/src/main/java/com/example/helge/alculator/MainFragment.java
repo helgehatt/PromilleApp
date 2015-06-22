@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -249,7 +250,7 @@ public class MainFragment extends Fragment {
     private void updateLabels() {
 
         double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
-        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
+        mPermilleView.setText("  " + pf.format(mCurrentScore) + " â€°");
 
         double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017);
         double n = mCurrentScore / mMetabolism / 10;
@@ -325,7 +326,11 @@ public class MainFragment extends Fragment {
 
             //Uncompress image.
             byte[] bytes = bundle.getByteArray(AddDrinkActivity.IMAGE);
-            Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            Bitmap image;
+            if (bytes != null)
+                image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            else
+                image = ((BitmapDrawable) getResources().getDrawable(R.drawable.drink_empty)).getBitmap();
 
             long time = System.currentTimeMillis();
             Drink newDrink = new Drink(name, alcohol, volume, calories, image, time);

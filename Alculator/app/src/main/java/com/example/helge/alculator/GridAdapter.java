@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class GridAdapter extends BaseAdapter {
         mDbHelper = new DrinksDbHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
 
-        //clearDatabase(); // TODO skal fjernes, når vi er lidt længere
+        //clearDatabase(); // TODO skal fjernes, nï¿½r vi er lidt lï¿½ngere
         //addToDatabase("Beer", 4.5, 33, 168, R.drawable.drink_beer_icon, System.currentTimeMillis());
         //addToDatabase("Light beer", 2.1, 33, 98, R.drawable.drink_beer_icon, System.currentTimeMillis());
         //addToDatabase("Shot", 32, 4, 20, R.drawable.drink_shot_icon, System.currentTimeMillis());
@@ -44,7 +45,11 @@ public class GridAdapter extends BaseAdapter {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String filePath = cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_IMAGE));
-            Bitmap image = getBitmapFromFilePath(filePath);
+            Bitmap image;
+            if (filePath != null)
+                image = getBitmapFromFilePath(filePath);
+            else
+                image = ((BitmapDrawable) mContext.getResources().getDrawable(R.drawable.drink_empty)).getBitmap();
 
             list.add(new Drink(cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_NAME)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE)),
@@ -85,9 +90,8 @@ public class GridAdapter extends BaseAdapter {
         File image = new File(filePath);
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
-
-        //bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
+        Bitmap bitmap;
+        bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
 
         return bitmap;
     }

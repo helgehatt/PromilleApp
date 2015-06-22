@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -74,11 +75,14 @@ public class AddDrinkActivity extends Activity {
                 drinkData.putExtra(CALORIES, caloriesString);
 
                 //Get current image from imageview, compress it and put it as extra.
-                Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                drinkData.putExtra(IMAGE, byteArray);
+                Drawable drawable = image.getDrawable();
+                if (drawable != null){
+                    Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    drinkData.putExtra(IMAGE, byteArray);
+                }
 
                 setResult(RESULT_OK, drinkData);
                 finish();
