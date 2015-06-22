@@ -2,18 +2,13 @@ package com.example.helge.alculator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.provider.MediaStore;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,12 +18,12 @@ import java.io.ByteArrayOutputStream;
 
 public class AddDrinkActivity extends Activity {
 
-    public static final int NEW_DRINK = 1;
     public static final String NAME = "DRINK_NAME";
     public static final String ALCOHOL = "DRINK_ALCOHOL";
     public static final String VOLUME = "DRINK_VOLUME";
     public static final String CALORIES = "DRINK_CALORIES";
     public static final String IMAGE = "DRINK_IMAGE";
+    public static final String IMAGE_PATH = "DRINK_IMAGE_PATH";
 
     private static final String MISSING_FIELDS = "Required fields are missing.";
 
@@ -38,9 +33,15 @@ public class AddDrinkActivity extends Activity {
     private EditText caloriesField;
     private ImageView image;
 
+    private Intent drinkData;
+
+    static final int SELECT_PICTURE_REQUEST = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        drinkData = new Intent();
 
         setContentView(R.layout.activity_add_drink);
         
@@ -57,7 +58,6 @@ public class AddDrinkActivity extends Activity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent data = new Intent();
                 String nameString = nameField.getText().toString();
                 String alcoholString = percentageField.getText().toString();
                 String volumeString = volumeField.getText().toString();
@@ -68,19 +68,19 @@ public class AddDrinkActivity extends Activity {
                     return;
                 }
                 
-                data.putExtra(NAME, nameString);
-                data.putExtra(ALCOHOL, alcoholString);
-                data.putExtra(VOLUME, volumeString);
-                data.putExtra(CALORIES, caloriesString);
+                drinkData.putExtra(NAME, nameString);
+                drinkData.putExtra(ALCOHOL, alcoholString);
+                drinkData.putExtra(VOLUME, volumeString);
+                drinkData.putExtra(CALORIES, caloriesString);
 
                 //Get current image from imageview, compress it and put it as extra.
                 Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] byteArray = stream.toByteArray();
-                data.putExtra(IMAGE, byteArray);
+                drinkData.putExtra(IMAGE, byteArray);
 
-                setResult(RESULT_OK, data);
+                setResult(RESULT_OK, drinkData);
                 finish();
             }
         });
@@ -101,8 +101,36 @@ public class AddDrinkActivity extends Activity {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: give image choices.
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,
+                        "Select Picture"), SELECT_PICTURE_REQUEST);
             }
         });
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == SELECT_PICTURE_REQUEST) {
+            Uri uri = data.getData();
+            String filePath = getRealPathFromURI(uri);
+            drinkData.putExtra(IMAGE_PATH, filePath);
+            // TODO change image in view
+        }
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {
+        // can post image
+        String [] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getApplicationContext().getContentResolver().query(contentUri,
+                proj,
+                null,
+                null,
+                null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
+    }
+
 }

@@ -44,7 +44,7 @@ public class MainFragment extends Fragment {
     private static final DecimalFormat pf = new DecimalFormat("#0.00");
     private static final DecimalFormat sf = new DecimalFormat("###");
 
-    static final int ADD_DRINK_REQUEST = 0;
+    static final int NEW_DRINK_REQUEST = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class MainFragment extends Fragment {
                     mAdapter.sort();
                     Log.i(TAG, "Increment drink");
                     mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
+                    mAdapter.setSelected(0);
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
 
@@ -118,7 +119,7 @@ public class MainFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!mAdapter.setSelected(position)) {
                     Intent addDrinkIntent = new Intent(getActivity().getApplicationContext(), AddDrinkActivity.class);
-                    startActivityForResult(addDrinkIntent, ADD_DRINK_REQUEST);
+                    startActivityForResult(addDrinkIntent, NEW_DRINK_REQUEST);
                 }
                 mGrid.invalidateViews();
             }
@@ -126,6 +127,7 @@ public class MainFragment extends Fragment {
         mGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                mAdapter.setSelected(position);
                 Drink drink = mAdapter.getItem(position);
                 if (drink != null){
                     Dialog.newInstance(drink.getName(), drink.getAlcoholPercent(), drink.getVolume(), drink.getCalories(), drink.getImage())
@@ -249,7 +251,7 @@ public class MainFragment extends Fragment {
     private void updateLabels() {
 
         double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
-        mPermilleView.setText("  " + pf.format(mCurrentScore) + " â€°");
+        mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
 
         double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017);
         double n = mCurrentScore / mMetabolism / 10;
@@ -310,11 +312,13 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (ADD_DRINK_REQUEST == requestCode && Activity.RESULT_OK == resultCode){
+        if (NEW_DRINK_REQUEST == requestCode && Activity.RESULT_OK == resultCode){
             Bundle bundle = data.getExtras();
             String name = bundle.getString(AddDrinkActivity.NAME);
             double alcohol = Double.parseDouble(bundle.getString(AddDrinkActivity.ALCOHOL));
             int volume = Integer.parseInt(bundle.getString(AddDrinkActivity.VOLUME));
+            String imagePath = bundle.getString(AddDrinkActivity.IMAGE_PATH);
+            Log.i(TAG, bundle.getString(AddDrinkActivity.IMAGE_PATH)); // TODO hvorfor duer det her ikke?
 
             String caloriesString = bundle.getString(AddDrinkActivity.CALORIES);
             int calories = 0;
@@ -327,11 +331,11 @@ public class MainFragment extends Fragment {
             Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
             Drink newDrink = new Drink(name, alcohol, volume, calories, image, System.currentTimeMillis());
-            mAdapter.addToDatabase(name, alcohol, volume, calories, R.drawable.drink_beer_icon, System.currentTimeMillis()); // TODO add image resource to device and save resource id to database
+            mAdapter.addToDatabase(name, alcohol, volume, calories, imagePath, System.currentTimeMillis()); // TODO add image resource to device and save resource id to database
             mAdapter.add(newDrink);
             mAdapter.notifyDataSetChanged();
             mGrid.invalidateViews();
-        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == ADD_DRINK_REQUEST) {
+        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == NEW_DRINK_REQUEST) {
             Toast.makeText(getActivity().getApplicationContext(), "No drink added", Toast.LENGTH_LONG).show();
         }
     }

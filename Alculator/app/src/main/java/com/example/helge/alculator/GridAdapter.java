@@ -7,22 +7,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Gallery;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class GridAdapter extends BaseAdapter {
     public static final String TAG = "Alculator";
@@ -39,35 +38,37 @@ public class GridAdapter extends BaseAdapter {
         mDbHelper = new DrinksDbHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
 
-        clearDatabase(); // TODO skal fjernes, nï¿½r vi er lidt lï¿½ngere
-        addToDatabase("Beer", 4.5, 33, 168, R.drawable.drink_beer_icon, System.currentTimeMillis());
-        addToDatabase("Light beer", 2.1, 33, 98, R.drawable.drink_beer_icon, System.currentTimeMillis());
-        addToDatabase("Shot", 32, 4, 20, R.drawable.drink_shot_icon, System.currentTimeMillis());
+        //clearDatabase(); // TODO skal fjernes, når vi er lidt længere
+        //addToDatabase("Beer", 4.5, 33, 168, R.drawable.drink_beer_icon, System.currentTimeMillis());
+        //addToDatabase("Light beer", 2.1, 33, 98, R.drawable.drink_beer_icon, System.currentTimeMillis());
+        //addToDatabase("Shot", 32, 4, 20, R.drawable.drink_shot_icon, System.currentTimeMillis());
 
         Cursor cursor = readDrinks();
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            String filePath = cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_LAST_USE));
+            Bitmap image = getBitmapFromFilePath(filePath);
+
             list.add(new Drink(cursor.getString(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_NAME)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_VOLUME)),
                     cursor.getDouble(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_CALORIES)),
-                    BitmapFactory.decodeResource(mContext.getApplicationContext().getResources(),
-                            cursor.getInt(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_IMAGE))), // TODO get image resource from database
+                    image,
                     cursor.getLong(cursor.getColumnIndex(DrinksContract.DrinkEntry.COLUMN_LAST_USE)) ));
             cursor.moveToNext();
         }
         cursor.close();
     }
 
-    public void addToDatabase(String name, double percentage, double volume, double calories, int imageID, long lastUse) {
+    public void addToDatabase(String name, double percentage, double volume, double calories, String imagePath, long lastUse) {
         ContentValues values = new ContentValues();
 
         values.put(DrinksContract.DrinkEntry.COLUMN_NAME, name);
         values.put(DrinksContract.DrinkEntry.COLUMN_PERCENTAGE, percentage);
         values.put(DrinksContract.DrinkEntry.COLUMN_VOLUME, volume);
         values.put(DrinksContract.DrinkEntry.COLUMN_CALORIES, calories);
-        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, imageID);
+        values.put(DrinksContract.DrinkEntry.COLUMN_IMAGE, imagePath);
         values.put(DrinksContract.DrinkEntry.COLUMN_LAST_USE, lastUse);
         mDatabase.insert(DrinksContract.DrinkEntry.TABLE_NAME, null, values);
         values.clear();
@@ -82,6 +83,29 @@ public class GridAdapter extends BaseAdapter {
         drink.setLastUse(lastUse);
 
         sort();
+    }
+
+    private Bitmap getBitmapFromFilePath(String filePath) {
+        File sd = Environment.getExternalStorageDirectory();
+        File image = new File(filePath);
+        Log.i(GridAdapter.TAG, filePath); // TODO remove later
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+
+        return bitmap;
+
+        //bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
+
+        //imageView.setImageBitmap(bitmap);
+
+        /*
+        ParcelFileDescriptor parcelFileDescriptor =
+                mContext.getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;*/
     }
 
     public void add(Drink newDrink) {
