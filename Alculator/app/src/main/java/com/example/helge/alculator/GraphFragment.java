@@ -71,8 +71,10 @@ public class GraphFragment extends Fragment {
             @Override
             public String formatLabel(double value, boolean isValueX) {
                 if (isValueX) {
-                    double num = Double.parseDouble(super.formatLabel(value % 24, true));
-                    return df.format(num % 100 - num % 1) + ":" + df.format(num % 1 * 60);
+                    String[] num = super.formatLabel(value % 24, true).split(",|\\.");
+                    return num[0] + ":" + df.format(Double.parseDouble("0."+num[1]) * 60);
+                    //double num = Double.parseDouble(super.formatLabel(value % 24, true));
+                    //return df.format(num % 100 - num % 1) + ":" + df.format(num % 1 * 60);
                 } else {
                     return super.formatLabel(value, false);
                 }
