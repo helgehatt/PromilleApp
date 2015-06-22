@@ -15,25 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ViewPager.SimpleOnPageChangeListener onPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-
-                switch (position) {
-                    case 0:
-                        ((HistoryFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + position)).updateLabels();
-                        break;
-                    case 1:
-                        ((GraphFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + position)).updateLabels();
-                        break;
-                }
-            }
-        };
-
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.addOnPageChangeListener(onPageChangeListener);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setCurrentItem(2);
 

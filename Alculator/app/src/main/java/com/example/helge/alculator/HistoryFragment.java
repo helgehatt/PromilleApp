@@ -25,13 +25,6 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        getViews(view);
-
-        return view;
-    }
-
-    public void getViews(View view) {
-
         cVolumeView = (TextView) view.findViewById(R.id.cVolume);
         tVolumeView = (TextView) view.findViewById(R.id.tVolume);
 
@@ -43,6 +36,15 @@ public class HistoryFragment extends Fragment {
 
         cCaloriesView = (TextView) view.findViewById(R.id.cCalories);
         tCaloriesView = (TextView) view.findViewById(R.id.tCalories);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateLabels();
     }
 
     public void updateLabels() {
@@ -67,16 +69,5 @@ public class HistoryFragment extends Fragment {
 
     double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
         return Double.longBitsToDouble(prefs.getLong(key, Double.doubleToLongBits(defaultValue)));
-    }
-
-    public void resetAllPrefs() {
-        if (null == cPrefs)
-            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
-
-        if (null == tPrefs)
-            tPrefs = getActivity().getSharedPreferences("total", Context.MODE_PRIVATE);
-
-        cPrefs.edit().clear().apply();
-        tPrefs.edit().clear().apply();
     }
 }
