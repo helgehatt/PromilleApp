@@ -35,11 +35,6 @@ public class GridAdapter extends BaseAdapter {
         mDbHelper = new DrinksDbHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
 
-        //clearDatabase(); // TODO skal fjernes, n�r vi er lidt l�ngere
-        //addToDatabase("Beer", 4.5, 33, 168, R.drawable.drink_beer_icon, System.currentTimeMillis());
-        //addToDatabase("Light beer", 2.1, 33, 98, R.drawable.drink_beer_icon, System.currentTimeMillis());
-        //addToDatabase("Shot", 32, 4, 20, R.drawable.drink_shot_icon, System.currentTimeMillis());
-
         Cursor cursor = readDrinks();
 
         cursor.moveToFirst();

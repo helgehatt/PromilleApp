@@ -60,7 +60,7 @@ public class AddDrinkActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String nameString = nameField.getText().toString();
-                String alcoholString = percentageField.getText().toString();
+                String alcoholString = percentageField.getText().toString().replace(',','.');
                 String volumeString = volumeField.getText().toString();
                 String caloriesString = caloriesField.getText().toString();
 
