@@ -118,7 +118,8 @@ public class AddDrinkActivity extends Activity {
             Uri uri = data.getData();
             String filePath = getRealPathFromURI(uri);
             drinkData.putExtra(IMAGE_PATH, filePath);
-            image.setImageBitmap(GridAdapter.getBitmapFromFilePath(filePath));
+            Bitmap bitmap = Bitmap.createScaledBitmap(GridAdapter.getBitmapFromFilePath(filePath), 200, 200, false);
+            image.setImageBitmap(bitmap);
         }
     }
 
