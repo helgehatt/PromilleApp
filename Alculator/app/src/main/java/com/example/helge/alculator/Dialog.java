@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,6 @@ import java.text.DecimalFormat;
 
 
 public class Dialog extends DialogFragment {
-
-    private String mName;
-    private Bitmap mImage;
-    private double mAlcohol, mVolume, mCalories;
-    private TextView nameView, alcoholView, volumeView, caloriesView;
-    private ImageView imageView;
 
     private static final DecimalFormat df = new DecimalFormat("#####.#");
 
@@ -50,18 +43,18 @@ public class Dialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dialog, container, false);
 
-        mName = getArguments().getString("mName");
-        mAlcohol = getArguments().getDouble("mAlcohol");
-        mVolume = getArguments().getDouble("mVolume");
-        mCalories = getArguments().getDouble("mCalories");
+        String mName = getArguments().getString("mName");
+        double mAlcohol = getArguments().getDouble("mAlcohol");
+        double mVolume = getArguments().getDouble("mVolume");
+        double mCalories = getArguments().getDouble("mCalories");
         byte[] bytes = getArguments().getByteArray("mImage");
-        mImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        Bitmap mImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-        nameView = (TextView) view.findViewById(R.id.dialog_name);
-        alcoholView = (TextView) view.findViewById(R.id.dialog_alcoholPercentage);
-        volumeView = (TextView) view.findViewById(R.id.dialog_volume);
-        caloriesView = (TextView) view.findViewById(R.id.dialog_calories);
-        imageView = (ImageView) view.findViewById(R.id.dialog_image);
+        TextView nameView = (TextView) view.findViewById(R.id.dialog_name);
+        TextView alcoholView = (TextView) view.findViewById(R.id.dialog_alcoholPercentage);
+        TextView volumeView = (TextView) view.findViewById(R.id.dialog_volume);
+        TextView caloriesView = (TextView) view.findViewById(R.id.dialog_calories);
+        ImageView imageView = (ImageView) view.findViewById(R.id.dialog_image);
 
         nameView.setText(mName);
         alcoholView.setText(df.format(mAlcohol) + " %");

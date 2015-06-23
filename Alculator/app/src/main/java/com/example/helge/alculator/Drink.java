@@ -1,10 +1,9 @@
 package com.example.helge.alculator;
 
-import java.io.Serializable;
 import android.graphics.Bitmap;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import java.io.Serializable;
 
 public class Drink implements Serializable, Comparable<Drink> {
     //Fields
