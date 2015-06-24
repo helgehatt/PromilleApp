@@ -28,6 +28,7 @@ public class MainFragment extends Fragment {
     private GridView mGrid;
     private GridAdapter mAdapter;
     private TextView mPermilleView, mSoberInView;
+    private String soberIn, soberInH, soberInM;
     private double mTimeSinceStart;
 
     private static double cVolume, tVolume;
@@ -53,6 +54,9 @@ public class MainFragment extends Fragment {
 
         mPermilleView = (TextView) view.findViewById(R.id.permille);
         mSoberInView = (TextView) view.findViewById(R.id.soberIn);
+        soberIn = getResources().getText(R.string.sober_in) + " ";
+        soberInH = " " + getResources().getText(R.string.sober_in_hours) + " ";
+        soberInM = " " + getResources().getText(R.string.sober_in_minutes);
         mGraph = getGraph();
 
         initPrefs();
@@ -255,10 +259,7 @@ public class MainFragment extends Fragment {
 
         double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017);
         double n = mCurrentScore / mMetabolism / 10;
-        String soberIn = ""+getResources().getText(R.string.sober_in);
-        String soberInH = ""+getResources().getText(R.string.sober_in_hours);
-        String soberInM = ""+getResources().getText(R.string.sober_in_minutes);
-        mSoberInView.setText(soberIn +" "+ sf.format(n % 100 - n % 1) +" "+ soberInH +" "+ sf.format(n % 1 * 60) +" "+ soberInM);
+        mSoberInView.setText(soberIn + sf.format(n % 100 - n % 1) + soberInH + sf.format(n % 1 * 60) + soberInM);
     }
 
     private void initPrefs() {
