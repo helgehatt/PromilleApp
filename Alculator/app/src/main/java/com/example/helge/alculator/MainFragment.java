@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -67,7 +66,6 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     drink.incQuantity();
                     mAdapter.sort();
-                    Log.i(TAG, "Increment drink");
                     mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
                     mAdapter.setSelected(0);
                     mAdapter.notifyDataSetChanged();
@@ -98,7 +96,6 @@ public class MainFragment extends Fragment {
                     if (drink.getQuantity() > 0) {
                         drink.decQuantity();
                         mAdapter.sort();
-                        Log.i(TAG, "Decrement drink");
                         mAdapter.notifyDataSetChanged();
                         mGrid.invalidateViews();
                         remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
@@ -145,8 +142,6 @@ public class MainFragment extends Fragment {
                 return true;
             }
         });
-
-        Log.i(TAG, "CreateView()");
 
         return view;
     }
