@@ -9,8 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    PagerAdapter mPagerAdapter;
-    ViewPager mViewPager;
+    private PagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

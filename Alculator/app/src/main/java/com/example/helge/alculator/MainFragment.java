@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,42 +26,87 @@ import java.text.DecimalFormat;
 public class MainFragment extends Fragment {
     private final String TAG = "Alculator";
 
+    private int     cQuantity, tQuantity;
+    private double  cVolume, tVolume,
+            cAlcohol, tAlcohol,
+            cCalories, tCalories,
+            mCurrentScore, mHighScore, mCountScore,
+            mMetabolism, mBodyWater, mBodyWeight;
+    private boolean hasStartedDrinking;
+    private long    mStartTime;
+    private String  soberIn, soberInH, soberInM;
+
     private GridView mGrid;
     private GridAdapter mAdapter;
     private TextView mPermilleView, mSoberInView;
-    private String soberIn, soberInH, soberInM;
-    private double mTimeSinceStart;
-
-    private static double cVolume, tVolume;
-    private static int cQuantity, tQuantity;
-    private static double cAlcohol, tAlcohol;
-    private static double cCalories, tCalories;
-
     private SharedPreferences cPrefs, tPrefs, sPrefs;
-
-    private final Handler mHandler = new Handler();
-
     private GraphFragment mGraph;
+    private final Handler mHandler = new Handler();
 
     private static final DecimalFormat pf = new DecimalFormat("#0.00");
     private static final DecimalFormat sf = new DecimalFormat("###");
 
-    static final int NEW_DRINK_REQUEST = 1;
-    static final long ONE_MINUTE = 1000 * 60;
+    private static final int NEW_DRINK_REQUEST = 1;
+    private static final long ONE_MINUTE = 1000 * 60;
+    private static final double ONE_HOUR = 1000 * 60 * 60;
+
+    public double getCurrentVolume() {
+        return cVolume;
+    }
+
+    public double getTotalVolume() {
+        return tVolume;
+    }
+
+    public int getCurrentQuantity() {
+        return cQuantity;
+    }
+
+    public int getTotalQuantity() {
+        return tQuantity;
+    }
+
+    public double getCurrentAlcohol() {
+        return cAlcohol;
+    }
+
+    public double getTotalAlcohol() {
+        return tAlcohol;
+    }
+
+    public double getCurrentCalories() {
+        return cCalories;
+    }
+
+    public double getTotalCalories() {
+        return tCalories;
+    }
+
+    public double getCurrentScore() {
+        return mCurrentScore;
+    }
+
+    public double getHighScore() {
+        return mHighScore;
+    }
+
+    public double getCountScore() {
+        return mCountScore;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mGraph = getGraph();
 
         mPermilleView = (TextView) view.findViewById(R.id.permille);
         mSoberInView = (TextView) view.findViewById(R.id.soberIn);
         soberIn = getResources().getText(R.string.sober_in) + " ";
         soberInH = " " + getResources().getText(R.string.sober_in_hours) + " ";
         soberInM = " " + getResources().getText(R.string.sober_in_minutes);
-        mGraph = getGraph();
 
         initPrefs();
-        updateLabels();
 
         Button addButton = (Button) view.findViewById(R.id.button_add);
         addButton.setOnClickListener(new OnClickListener() {
@@ -70,20 +116,16 @@ public class MainFragment extends Fragment {
                 if (drink != null) {
                     drink.incQuantity();
                     mAdapter.sort();
+                    Log.i(TAG, "Increment drink");
                     mAdapter.setLastUseAndSort(drink, System.currentTimeMillis());
                     mAdapter.setSelected(0);
                     mAdapter.notifyDataSetChanged();
                     mGrid.invalidateViews();
 
-                    if (!cPrefs.getBoolean("mStartedDrinking", false)) {
-                        resetCurrentPrefs();
-                        cPrefs.edit().putBoolean("mStartedDrinking", true).apply();
-                        mHandler.postDelayed(mRunnable, ONE_MINUTE);
-                    }
+                    if (!hasStartedDrinking) start();
 
                     addDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
-                    makeImpairmentsToast(calculateCurrentScore());
-                    checkHighScore();
+                    makeImpairmentsToast(mCurrentScore);
                     updateLabels();
                     mGraph.updateLabels();
                     mGraph.updateGraph();
@@ -100,16 +142,13 @@ public class MainFragment extends Fragment {
                     if (drink.getQuantity() > 0) {
                         drink.decQuantity();
                         mAdapter.sort();
+                        Log.i(TAG, "Decrement drink");
                         mAdapter.notifyDataSetChanged();
                         mGrid.invalidateViews();
                         remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
-                        calculateCurrentScore();
+                        calculateScores();
 
-                        if (getDouble(cPrefs, "mCurrentScore", 0) < 0) {
-                            putDouble(cPrefs.edit(), "mCurrentScore", 0).apply();
-                            cPrefs.edit().putBoolean("mStartedDrinking", false).apply();
-                            mHandler.removeCallbacks(mRunnable);
-                        }
+                        if (mCurrentScore < 0) stop();
 
                         updateLabels();
                         mGraph.updateLabels();
@@ -147,75 +186,68 @@ public class MainFragment extends Fragment {
             }
         });
 
+        Log.i(TAG, "CreateView()");
+
         return view;
     }
 
     final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            mTimeSinceStart += 1 / 60.0;
-            putDouble(cPrefs.edit(),"mTimeSinceStart", mTimeSinceStart).apply();
-            calculateCurrentScore();
+            calculateScores();
             mHandler.postDelayed(this, ONE_MINUTE);
 
-            if (getDouble(cPrefs, "mCurrentScore", 0) < 0) {
-                putDouble(cPrefs.edit(), "mCurrentScore", 0).apply();
-                cPrefs.edit().putBoolean("mStartedDrinking", false).apply();
-                mHandler.removeCallbacks(mRunnable);
-            }
+            if (mCurrentScore < 0) stop();
+
             updateLabels();
             mGraph.updateLabels();
         }
     };
 
+    protected void start() {
+        resetCurrentPrefs();
+        hasStartedDrinking = true;
+        mStartTime = System.currentTimeMillis();
+        mHandler.postDelayed(mRunnable, ONE_MINUTE);
+    }
+
+    protected void stop() {
+        mCurrentScore = 0;
+        hasStartedDrinking = false;
+        mHandler.removeCallbacks(mRunnable);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        if (cPrefs.getBoolean("mStartedDrinking", false)) {
-            mTimeSinceStart = getDouble(cPrefs, "mTimeSinceStart", 100);
+        updateLabels();
+        if (hasStartedDrinking) {
             mHandler.removeCallbacks(mRunnable);
-            mHandler.postDelayed(mRunnable, ONE_MINUTE);
+            mHandler.post(mRunnable);
         }
     }
 
-    public void resetCurrentPrefs() {
-        if (null == cPrefs)
-            cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
+    @Override
+    public void onPause() {
+        super.onPause();
+        setPrefs();
+    }
 
+    protected void resetCurrentPrefs() {
         cPrefs.edit().clear().apply();
-        mTimeSinceStart = 0;
         mGraph.resetGraph();
         initPrefs();
     }
 
-    private void checkHighScore() {
+    private void calculateScores() {
 
-        double mHighScore = getDouble(tPrefs, "mHighScore", 0);
-        double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
+        double mTimeSinceStart = (System.currentTimeMillis() - mStartTime) / ONE_HOUR;
 
-        if (mCurrentScore > mHighScore) {
+        mCurrentScore = (0.806 * cAlcohol * 7.89 / 10 * 1.2 / mBodyWater / mBodyWeight - mMetabolism * mTimeSinceStart) * 10;
 
-            mHighScore = mCurrentScore;
-            putDouble(tPrefs.edit(), "mHighScore", mHighScore).apply();
-        }
-    }
+        if (mCurrentScore > mHighScore) mHighScore = mCurrentScore;
 
-    private double calculateCurrentScore() {
-
-        // Get constants.
-        String mGender = sPrefs.getString("gender", "Male");
-        double mBodyWater = mGender.equals("Male") ? 0.58 : 0.49;
-        double mMetabolism = mGender.equals("Male") ? 0.015 : 0.017;
-        double mBodyWeight = (double) sPrefs.getInt("weight", 70);
-        double mDrinks = getDouble(cPrefs, "cAlcohol", 0) * 7.89 / 10;
-
-        // Calculate CurrentScore.
-        double mCurrentScore = (0.806 * mDrinks * 1.2 / mBodyWater / mBodyWeight - mMetabolism * mTimeSinceStart) * 10.0;
-
-        // Set CurrentScore.
-        putDouble(cPrefs.edit(), "mCurrentScore", mCurrentScore).apply();
-
-        return mCurrentScore;
+        mCountScore = (mHighScore - mCurrentScore) / 0.806 / 1.2 * mBodyWater * mBodyWeight / 7.89 / 1.5;
     }
 
     private void addDrink(double volume, double alcohol, double calories) {
@@ -232,7 +264,7 @@ public class MainFragment extends Fragment {
         cCalories += calories;
         tCalories += calories;
 
-        setPrefs();
+        calculateScores();
     }
 
     private void remDrink(double volume, double alcohol, double calories) {
@@ -249,15 +281,13 @@ public class MainFragment extends Fragment {
         cCalories -= calories;
         tCalories -= calories;
 
-        setPrefs();
+        calculateScores();
     }
 
-    private void updateLabels() {
+    protected void updateLabels() {
 
-        double mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
         mPermilleView.setText("  " + pf.format(mCurrentScore) + " ‰");
 
-        double mMetabolism = (sPrefs.getString("gender", "Male").equals("Male") ? 0.015 : 0.017);
         double n = mCurrentScore / mMetabolism / 10;
         mSoberInView.setText(soberIn + sf.format(n % 100 - n % 1) + soberInH + sf.format(n % 1 * 60) + soberInM);
     }
@@ -283,6 +313,17 @@ public class MainFragment extends Fragment {
 
         cCalories = getDouble(cPrefs, "cCalories", 0);
         tCalories = getDouble(tPrefs, "tCalories", 0);
+
+        mCurrentScore = getDouble(cPrefs, "mCurrentScore", 0);
+        mHighScore = getDouble(tPrefs, "mHighScore", 0);
+
+        String mGender = sPrefs.getString("gender", "Male");
+        mBodyWater = mGender.equals("Male") ? 0.58 : 0.49;
+        mMetabolism = mGender.equals("Male") ? 0.015 : 0.017;
+        mBodyWeight = (double) sPrefs.getInt("weight", 70);
+
+        mStartTime = cPrefs.getLong("mStartTime", 0);
+        hasStartedDrinking = cPrefs.getBoolean("hasStartedDrinking", false);
     }
 
     private void setPrefs() {
@@ -301,6 +342,12 @@ public class MainFragment extends Fragment {
 
         putDouble(cEditor, "cCalories", cCalories);
         putDouble(tEditor,"tCalories", tCalories);
+
+        putDouble(cEditor, "mCurrentScore", mCurrentScore);
+        putDouble(tEditor, "mHighScore", mHighScore);
+
+        cEditor.putLong("mStartTime", mStartTime);
+        cEditor.putBoolean("hasStartedDrinking", hasStartedDrinking);
 
         cEditor.apply();
         tEditor.apply();
@@ -369,10 +416,7 @@ public class MainFragment extends Fragment {
     }
 
     private GraphFragment getGraph() {
-        GraphFragment graph = (GraphFragment) getActivity().getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 1);
-        if (null == graph)
-            Fragment.instantiate(getActivity().getApplicationContext(), GraphFragment.class.getName());
-        return graph;
+        return (GraphFragment) getActivity().getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + 1);
     }
 
     // Deletes the selected item.

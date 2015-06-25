@@ -30,6 +30,7 @@
     <string name="settings_weight">Weight:</string>
     <string name="settings_kg">kg</string>
     <string name="settings_lbs">lbs</string>
+    <string name="settings_reset">Reset</string>
 
     <string name="add_drink_kcal_optional">(Calories):</string>
     <string name="add_drink_volume">Volume:</string>
