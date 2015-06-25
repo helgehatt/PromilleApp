@@ -28,10 +28,10 @@ public class MainFragment extends Fragment {
 
     private int     cQuantity, tQuantity;
     private double  cVolume, tVolume,
-            cAlcohol, tAlcohol,
-            cCalories, tCalories,
-            mCurrentScore, mHighScore, mCountScore,
-            mMetabolism, mBodyWater, mBodyWeight;
+                    cAlcohol, tAlcohol,
+                    cCalories, tCalories,
+                    mCurrentScore, mHighScore, mCountScore,
+                    mMetabolism, mBodyWater, mBodyWeight;
     private boolean hasStartedDrinking;
     private long    mStartTime;
     private String  soberIn, soberInH, soberInM;
@@ -148,7 +148,7 @@ public class MainFragment extends Fragment {
                         remDrink(drink.getVolume(), drink.getAlcoholPercent(), drink.getCalories());
                         calculateScores();
 
-                        if (mCurrentScore < 0) stop();
+                        if (mCurrentScore == 0) stop();
 
                         updateLabels();
                         mGraph.updateLabels();
@@ -197,7 +197,7 @@ public class MainFragment extends Fragment {
             calculateScores();
             mHandler.postDelayed(this, ONE_MINUTE);
 
-            if (mCurrentScore < 0) stop();
+            if (mCurrentScore == 0) stop();
 
             updateLabels();
             mGraph.updateLabels();
@@ -212,7 +212,6 @@ public class MainFragment extends Fragment {
     }
 
     protected void stop() {
-        mCurrentScore = 0;
         hasStartedDrinking = false;
         mHandler.removeCallbacks(mRunnable);
     }
@@ -245,9 +244,12 @@ public class MainFragment extends Fragment {
 
         mCurrentScore = (0.806 * cAlcohol * 7.89 / 10 * 1.2 / mBodyWater / mBodyWeight - mMetabolism * mTimeSinceStart) * 10;
 
+        if (mCurrentScore < 0) mCurrentScore = 0;
+
         if (mCurrentScore > mHighScore) mHighScore = mCurrentScore;
 
         mCountScore = (mHighScore - mCurrentScore) / 0.806 / 1.2 * mBodyWater * mBodyWeight / 7.89 / 1.5;
+
     }
 
     private void addDrink(double volume, double alcohol, double calories) {
@@ -292,7 +294,7 @@ public class MainFragment extends Fragment {
         mSoberInView.setText(soberIn + sf.format(n % 100 - n % 1) + soberInH + sf.format(n % 1 * 60) + soberInM);
     }
 
-    private void initPrefs() {
+    protected void initPrefs() {
         if (null == cPrefs)
             cPrefs = getActivity().getSharedPreferences("current", Context.MODE_PRIVATE);
 
@@ -321,6 +323,7 @@ public class MainFragment extends Fragment {
         mBodyWater = mGender.equals("Male") ? 0.58 : 0.49;
         mMetabolism = mGender.equals("Male") ? 0.015 : 0.017;
         mBodyWeight = (double) sPrefs.getInt("weight", 70);
+        if (sPrefs.getString("unit", "Metric").equals("Imperial")) mBodyWeight /= 2.20462;
 
         mStartTime = cPrefs.getLong("mStartTime", 0);
         hasStartedDrinking = cPrefs.getBoolean("hasStartedDrinking", false);
@@ -425,5 +428,24 @@ public class MainFragment extends Fragment {
         mAdapter.removeSelectedItem();
         mAdapter.notifyDataSetChanged();
         mGrid.invalidateViews();
+    }
+
+    protected void onSettingsChanged() {
+
+        String mGender = sPrefs.getString("gender", "Male");
+        mBodyWater = mGender.equals("Male") ? 0.58 : 0.49;
+        mMetabolism = mGender.equals("Male") ? 0.015 : 0.017;
+        mBodyWeight = (double) sPrefs.getInt("weight", 70);
+        if (sPrefs.getString("unit", "Metric").equals("Imperial")) mBodyWeight /= 2.20462;
+
+        calculateScores();
+        updateLabels();
+    }
+
+    protected void onResetPressed() {
+        tPrefs.edit().clear().apply();
+        resetCurrentPrefs();
+        stop();
+        updateLabels();
     }
 }
